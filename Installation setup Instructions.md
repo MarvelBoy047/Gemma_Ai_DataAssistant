@@ -66,19 +66,22 @@ If you have a modern NVIDIA GPU, installing CUDA Toolkit will significantly impr
 ### *Download Required AI Models:*
 Open *Command Prompt* or *PowerShell* as Administrator and run these commands one by one:
 ```shell
-ollama pull gemma:2b && ollama pull nomic-embed-text
+ollama pull gemma3n:e2b && ollama nomic-embed-text:v1.5
 ```
 
 ### *Verify Model Installation:*
 Check if models are properly installed by running: `ollama list`
+```shell
+ollama ollama list
+```
 
 > [!NOTE]
 > The output should look similar to this. The exact ID and size may vary.
 >
 > ```
-> NAME               ID           SIZE    MODIFIED
-> gemma:2b           ...          5.6 GB  ...
-> nomic-embed-text   ...          274 MB  ...
+> NAME                   ID           SIZE    MODIFIED
+> gemma3n:e2b            ...          5.6 GB  ...
+> nomic-embed-text:v1.5   ...          274 MB  ...
 > ```
 
 ### *Start Ollama Service:*
