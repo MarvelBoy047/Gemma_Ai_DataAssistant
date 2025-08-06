@@ -81,26 +81,26 @@ Our system uses two coordinated AI agents to deliver a seamless experience from 
 
 ```mermaid
 graph TD
-    A[🗂️ User Uploads Data & Gives Prompt] --> B{📱 Planner Agent (app.py)};
-    B --> C{📝 Proposes Analysis Plan};
-    C --> D{✅ User Approves Plan};
-    D --> E{👨‍💻 Executor Agent (coding_agent.py)};
-    E --> F[1. Generates Code];
-    F --> G[2. Executes in Notebook];
-    G --> H{💥 Error?};
-    H -- Yes --> I[3. Self-Heals with RAG];
-    I --> F;
-    H -- No --> J[📊 Appends Results];
-    J --> E;
-    E -- All Tasks Done --> K[📋 Generates Final Summary & Notebook];
+    A[🗂️ User Uploads Data & Gives Prompt] --> B{📱 Planner Agent (app.py)}
+    B --> C{📝 Proposes Analysis Plan}
+    C --> D{✅ User Approves Plan}
+    D --> E{👨‍💻 Executor Agent (coding_agent.py)}
+    E --> F[1. Generates Code]
+    F --> G[2. Executes in Notebook]
+    G --> H{💥 Error?}
+    H -- Yes --> I[3. Self-Heals with RAG]
+    I --> F
+    H -- No --> J[📊 Appends Results]
+    J --> E
+    E -- All Tasks Done --> K[📋 Generates Final Summary & Notebook]
 
     subgraph "Knowledge Base (RAG)"
         L[📚 knowledge_base.json]
         M[🔍 FAISS Vector Search]
     end
 
-    B -- Reads --> L;
-    I -- Learns from --> L;
+    B -- Reads --> L
+    I -- Learns from --> L
 ```
 
 1.  **UI & Planning (`app.py`)**: The user interacts with a Streamlit front-end. This "Planner Agent" uses a RAG system on `knowledge_base.json` to understand the user's request and propose a high-level, logical plan for approval.
@@ -200,22 +200,24 @@ Gemma_Ai_DataAssistant/
 │
 ├── 📚 knowledge_base.json    # Shared RAG database for planning and code correction
 │
-├── requirements.txt         # All Python package dependencies
+├── 📦 Requirements.txt         # All Python package dependencies
 │
-└── 🗂️ Data & State Directories/
-    │
-    ├── chat_history/        # Communication Bus: Stores user chat logs and approved plans
-    │   └── <session_id>.json
-    │
-    ├── agent_memory/        # Agent's Logbook: Detailed logs of the Executor's decisions & actions
-    │   └── <session_id>_memory.json
-    │
-    ├── notebooks/           # Final Deliverables: Stores generated .ipynb files and datasets
-    │   └── <session_id>/
-    │       ├── <dataset_name>.csv
-    │       └── <session_id>.ipynb
-    │
-    └── planner_kb_index/    # Cached FAISS index for the Planner Agent's knowledge base
+├── 🧩 Installation setup Instructions.md  # nothing extra straight forward steps
+|
+├── 💡 README.md #explaining why the project even exists
+|
+├── 🗂️chat_history/        # Communication Bus: Stores user chat logs and approved plans
+│   └── <session_id>.json
+│
+├── 🗂️agent_memory/        # Agent's Logbook: Detailed logs of the Executor's decisions & actions
+│   └── <session_id>_memory.json
+│
+├── 🗂️notebooks/           # Final Deliverables: Stores generated .ipynb files and datasets
+│   └── 🗂️<session_id>/
+│       ├── <dataset_name>.csv
+│       └── <session_id>.ipynb
+│
+└── planner_kb_index/    # Cached FAISS index for the Planner Agent's knowledge base
 
 ```
 
