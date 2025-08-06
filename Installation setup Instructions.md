@@ -131,7 +131,7 @@ streamlit run app.py
 ```
 
 ### *Initial Setup Process:*
-![Initial Setup](assets/1.png)
+![Initial Setup](assets/page1.png)
 
 > [!NOTE]
 > **First-Time Launch:** The application will index the knowledge base, which is a one-time process that takes 2-3 minutes. Subsequent launches will be much faster (10-15 seconds).
