@@ -117,8 +117,6 @@ if "uploaded_file_name" not in st.session_state:
     st.session_state.uploaded_file_name = None
 if "pending_plan" not in st.session_state:
     st.session_state.pending_plan = None
-if "initial_loading_complete" not in st.session_state:
-    st.session_state.initial_loading_complete = False
 
 #--- CORE HELPER FUNCTIONS ---
 def get_chat_sessions() -> List[str]:
@@ -340,39 +338,6 @@ def trigger_coding_agent():
         save_chat_history_to_file()
         st.rerun()
 
-
-def run_initial_loading():
-    """
-    Displays a one-time loading bar while initializing backend components.
-    """
-    st.set_page_config(page_title="Loading...", layout="centered")
-    st.title("🤖 Initializing Gemma Data Assistant...")
-    
-    loading_bar = st.progress(0, text="Waking up the agent...")
-    
-    # Simulate loading steps for a better user experience
-    time.sleep(1)
-    loading_bar.progress(33, text="Checking system health...")
-    
-    # This is where the actual work happens
-    try:
-        # Initialize the planner's knowledge base (this is the slow part)
-        get_planner_kb()
-        loading_bar.progress(100, text="Initialization complete!")
-        time.sleep(1)
-        
-        # Set the flag to True so this doesn't run again
-        st.session_state.initial_loading_complete = True
-        
-        # Force the app to rerun from the top, which will now skip the loading screen
-        st.rerun()
-
-    except Exception as e:
-        st.error(f"Fatal error during initialization: {e}")
-        st.error("Please check your Ollama connection and knowledge_base.json file, then refresh the page.")
-        st.stop()
-
-
 @st.cache_resource
 def get_planner_kb():
     """Loads and caches the PlannerKnowledgeBase so it runs only once."""
@@ -580,14 +545,8 @@ def run_ui():
         handle_user_input(prompt)
 
 
+# MAIN EXECUTION BLOCK
 if __name__ == "__main__":
-    # First, check if the one-time initial loading is complete.
-    if not st.session_state.get("initial_loading_complete", False):
-        # If not, run the loading function. This function will set the flag
-        # and then rerun the app, so the code below won't execute this time.
-        run_initial_loading()
-    
-    # The code below will only run AFTER the initial loading is complete.
     if not OLLAMA_RUNNING:
         st.set_page_config(page_title="Fatal Error", layout="centered")
         st.title("❌ Connection Error")
@@ -602,10 +561,11 @@ if __name__ == "__main__":
         st.stop()
 
     if "agent_thread" not in st.session_state:
+        st.session_state.agent_thread = None
+
+    if st.session_state.agent_thread is None:
         agent_thread = threading.Thread(target=coding_agent_main, daemon=True)
         agent_thread.start()
         st.session_state.agent_thread = agent_thread
 
     run_ui()
-
-# --- END OF STEP 2 ---
