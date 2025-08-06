@@ -1,5 +1,3 @@
----
-
 # 🤖 Gemma Data Assistant: Democratizing AI-Powered Data Science
 
 **Your Personal, Private, and Powerful AI Data Scientist - Built for Impact**
