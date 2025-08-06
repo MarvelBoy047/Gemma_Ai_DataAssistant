@@ -66,7 +66,7 @@ If you have a modern NVIDIA GPU, installing CUDA Toolkit will significantly impr
 ### *Download Required AI Models:*
 Open *Command Prompt* or *PowerShell* as Administrator and run these commands one by one:
 ```shell
-ollama pull gemma3n:e2b && ollama nomic-embed-text:v1.5
+ollama pull gemma3n:e2b && ollama pull nomic-embed-text:v1.5
 ```
 
 ### *Verify Model Installation:*
