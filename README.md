@@ -75,43 +75,33 @@ Gemma Data Assistant transforms this vision into reality using Google's groundbr
 
 ---
 
+
 ## 🚀 **How It Works: The Dual-Agent Intelligence Pipeline**
 
-Our system uses two coordinated AI agents to deliver a seamless experience from user request to final report.
+Our system uses two coordinated AI agents that work together in a three-stage process to deliver a seamless experience, from user request to final report.
 
-<details>
-<summary>📈 Click to view system diagram (Mermaid syntax)</summary>
+*   **Stage 1: User Interaction & Planning (`app.py`)**
+    *   ➡️ 🗂️ **User Input:** A user uploads a dataset and provides a natural language prompt.
+    *   ➡️ 🧠 **Planner Agent Activated:** The system analyzes the request.
+    *   ➡️ 📚 **RAG Search:** The Planner consults the `knowledge_base.json` to find relevant analysis steps.
+    *   ➡️ 📝 **Plan Proposal:** The agent generates a high-level analysis plan for the user to review.
+    *   ➡️ ✅ **User Approval:** The user approves the plan, which triggers the next stage.
 
-```mermaid
-graph TD
-    A[🗂️ User Uploads Data & Gives Prompt] --> B{📱 Planner Agent (app.py)}
-    B --> C{📝 Proposes Analysis Plan}
-    C --> D{✅ User Approves Plan}
-    D --> E{👨‍💻 Executor Agent (coding_agent.py)}
-    E --> F[1. Generates Code]
-    F --> G[2. Executes in Notebook]
-    G --> H{💥 Error?}
-    H -- Yes --> I[3. Self-Heals with RAG]
-    I --> F
-    H -- No --> J[📊 Appends Results]
-    J --> E
-    E -- All Tasks Done --> K[📋 Generates Final Summary & Notebook]
+*   **Stage 2: Autonomous Execution & Self-Healing (`coding_agent.py`)**
+    *   ➡️ 👨‍💻 **Executor Agent Activated:** A background agent takes over and begins executing the approved plan task-by-task in a loop.
+    *   ➡️ **Inside the Execution Loop:**
+        *   **1. Code Generation:** The agent writes Python code for the current task.
+        *   **2. Notebook Execution:** The code is run in a Jupyter Notebook cell.
+        *   **3. Error Check:**
+            *   **If `Error` 💥:**
+                *   ➡️ **Self-Healing:** The agent uses its RAG system to search the `knowledge_base.json` for a solution, rewrites the code, and returns to Step 1 to try again.
+            *   **If `Success` ✅:**
+                *   ➡️ **Append Results:** The output is saved, and the agent moves to the next task in the plan.
+    *   ➡️ The loop continues until all tasks in the plan are completed.
 
-    subgraph "Knowledge Base (RAG)"
-        L[📚 knowledge_base.json]
-        M[🔍 FAISS Vector Search]
-    end
-
-    B -- Reads --> L
-    I -- Learns from --> L
-</details>
-```
-1.  **UI & Planning (`app.py`)**: The user interacts with a Streamlit front-end. This "Planner Agent" uses a RAG system on `knowledge_base.json` to understand the user's request and propose a high-level, logical plan for approval.
-2.  **Autonomous Execution (`coding_agent.py`)**: Once the user approves the plan, a background "Executor Agent" takes over. This powerful agent works autonomously to:
-    -   Generate production-quality Python code for each step.
-    -   Execute the code within a Jupyter kernel.
-    -   **Self-Heal**: If an error occurs, it uses its own RAG-powered error correction system to search its knowledge base for a solution, rewrite the code, and try again.
-3.  **Final Output**: Once all tasks are complete, the agent generates a final summary and provides the complete, documented Jupyter notebook.
+*   **Stage 3: Final Report**
+    *   ➡️ 📋 **Analysis Complete:** Once the loop finishes, the Executor Agent generates a final, user-friendly summary of the findings.
+    *   ➡️ 🎁 **Deliverables:** The user is presented with the summary and the complete, documented Jupyter Notebook.
 
 ---
 
