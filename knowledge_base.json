@@ -1,0 +1,632 @@
+[
+  {
+    "id": 1,
+    "description": "Import essential libraries",
+    "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import LabelEncoder\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import classification_report\nprint('✅ Libraries imported.')",
+    "mode": "neutral"
+  },
+  {
+    "id": 2,
+    "description": "Automatically load dataset from first CSV file in current directory",
+    "code": "import os\nfiles = [f for f in os.listdir() if f.endswith('.csv')]\nif files:\n    df = pd.read_csv(files[0])\n    df.columns = df.columns.str.strip().str.replace(' ', '_')\n    df_raw = df.copy()\n    print('✅ Loaded:', files[0], 'Shape:', df.shape)\nelse:\n    print('❌ No CSV files found in current directory.')",
+    "mode": "auto"
+  },
+  {
+    "id": 3,
+    "description": "Manually load dataset from specified CSV path",
+    "code": "df = pd.read_csv('your_dataset.csv')\ndf.columns = df.columns.str.strip().str.replace(' ', '_')\ndf_raw = df.copy()\nprint('✅ Loaded dataset. Shape:', df.shape)\n# NOTE: Replace 'your_dataset.csv' with your actual filename.",
+    "mode": "manual"
+  },
+  {
+    "id": 4,
+    "description": "Display column names in the dataset",
+    "code": "try:\n    print('📋 Columns:', df.columns.tolist())\nexcept Exception as e:\n    print('❌ Failed to list columns:', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 5,
+    "description": "Print dataset shape and data types",
+    "code": "try:\n    print('📐 Shape:', df.shape)\n    print('📊 Dtypes:', df.dtypes)\nexcept Exception as e:\n    print('❌ Failed to print shape/types:', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 6,
+    "description": "Check for duplicate rows",
+    "code": "try:\n    dups = df.duplicated().sum()\n    print('🔍 Duplicate rows found:', dups)\nexcept Exception as e:\n    print('❌ Failed to check duplicates:', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 7,
+    "description": "Print dataset info and statistical summary",
+    "code": "try:\n    print(df.info())\n    print(df.describe(include='all'))\nexcept Exception as e:\n    print('❌ Data audit failed:', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 8,
+    "description": "Drop columns with more than 90% missing values",
+    "code": "try:\n    missing_frac = df.isnull().mean()\n    drop_cols = missing_frac[missing_frac > 0.9].index\n    df.drop(columns=drop_cols, inplace=True)\n    print('🧹 Dropped columns:', drop_cols.tolist())\nexcept Exception as e:\n    print('❌ Dropping columns failed:', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 9,
+    "description": "Remove duplicate rows",
+    "code": "try:\n df.drop_duplicates(inplace=True)\n print('✅ Duplicates removed.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 10,
+    "description": "Fill missing values in categorical columns with 'Unknown'",
+    "code": "try:\n for c in df.select_dtypes(include='object'):\n  df[c].fillna('Unknown', inplace=True)\n print('✅ Missing categorical values filled.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 11,
+    "description": "Auto-detect target column using correlation with other numeric columns",
+    "code": "try:\n target_col = df.corr(numeric_only=True).abs().sum().sort_values(ascending=False).index[0]\n print('🎯 Target:', target_col)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 12,
+    "description": "User manually sets target column",
+    "code": "target_col = 'your_column_name'",
+    "mode": "manual"
+  },
+  {
+    "id": 13,
+    "description": "Separate features and target (auto)",
+    "code": "try:\n X = df.drop(columns=[target_col])\n y = df[target_col]\n print('✅ X:', X.shape, ', y:', y.shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 14,
+    "description": "Separate features and target (manual)",
+    "code": "X = df.drop(columns=['your_column'])\ny = df['your_column']",
+    "mode": "manual"
+  },
+  {
+    "id": 15,
+    "description": "Split data with stratify if target is categorical",
+    "code": "from sklearn.model_selection import train_test_split\ntry:\n strat = y if y.nunique() < 20 else None\n X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=strat, random_state=42)\n print('✅ Data split.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 16,
+    "description": "Train logistic regression model",
+    "code": "from sklearn.linear_model import LogisticRegression\ntry:\n model = LogisticRegression(max_iter=300)\n model.fit(X_train, y_train)\n print('✅ Model trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 17,
+    "description": "Generate predictions on test set",
+    "code": "try:\n y_pred = model.predict(X_test)\n print('✅ Predictions generated.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 18,
+    "description": "Print classification report for predictions",
+    "code": "from sklearn.metrics import classification_report\ntry:\n print(classification_report(y_test, y_pred))\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 19,
+    "description": "Train RandomForest model (auto)",
+    "code": "from sklearn.ensemble import RandomForestClassifier\ntry:\n rf = RandomForestClassifier(random_state=42)\n rf.fit(X_train, y_train)\n print('✅ RF trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 20,
+    "description": "Train RandomForest model (manual target)",
+    "code": "from sklearn.ensemble import RandomForestClassifier\nrf = RandomForestClassifier()\nrf.fit(X_train, y_train)",
+    "mode": "manual"
+  },
+  {
+    "id": 21,
+    "description": "Show feature importances from tree model",
+    "code": "try:\n importances = rf.feature_importances_\n feats = X.columns\n for f, i in sorted(zip(feats, importances), key=lambda x: -x[1])[:10]:\n  print(f, ':', format(i, '.4f'))\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 22,
+    "description": "Create correlation heatmap of numeric features",
+    "code": "try:\n sns.heatmap(df.select_dtypes(include='number').corr(), annot=False, cmap='coolwarm')\n plt.title('Correlation Heatmap')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 23,
+    "description": "Plot distribution of target column",
+    "code": "try:\n sns.countplot(x=target_col, data=df)\n plt.title('Target Distribution')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 24,
+    "description": "Plot histogram of top numeric features",
+    "code": "try:\n nums = df.select_dtypes(include='number').columns[:3]\n df[nums].hist(bins=30, figsize=(10,4))\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 25,
+    "description": "Boxplot of numeric feature vs target",
+    "code": "try:\n num = df.select_dtypes(include='number').columns[0]\n sns.boxplot(x=target_col, y=num, data=df)\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 26,
+    "description": "Pairplot of numeric features colored by target",
+    "code": "try:\n sns.pairplot(df, hue=target_col, diag_kind='hist')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 27,
+    "description": "Create interaction feature between top 2 numeric columns",
+    "code": "try:\n cols = df.select_dtypes(include='number').columns[:2]\n df['interaction'] = df[cols[0]] * df[cols[1]]\n print('✅ Interaction feature created.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 28,
+    "description": "Train KNN classifier",
+    "code": "from sklearn.neighbors import KNeighborsClassifier\ntry:\n knn = KNeighborsClassifier()\n knn.fit(X_train, y_train)\n print('✅ KNN trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 29,
+    "description": "Train SVM classifier",
+    "code": "from sklearn.svm import SVC\ntry:\n svm = SVC()\n svm.fit(X_train, y_train)\n print('✅ SVM trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 30,
+    "description": "Train XGBoost classifier (if available)",
+    "code": "try:\n from xgboost import XGBClassifier\n xgb = XGBClassifier()\n xgb.fit(X_train, y_train)\n print('✅ XGBoost trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 31,
+    "description": "Standardize numeric features",
+    "code": "from sklearn.preprocessing import StandardScaler\ntry:\n scaler = StandardScaler()\n X_scaled = scaler.fit_transform(X)\n print('✅ Features scaled.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 32,
+    "description": "Label encode categorical target if needed",
+    "code": "from sklearn.preprocessing import LabelEncoder\ntry:\n if y.dtype == 'object':\n  y = LabelEncoder().fit_transform(y)\n print('✅ Target encoded.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 33,
+    "description": "Train Decision Tree classifier (auto)",
+    "code": "from sklearn.tree import DecisionTreeClassifier\ntry:\n dt = DecisionTreeClassifier()\n dt.fit(X_train, y_train)\n print('✅ DecisionTree trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 34,
+    "description": "Train Gaussian Naive Bayes (auto)",
+    "code": "from sklearn.naive_bayes import GaussianNB\ntry:\n nb = GaussianNB()\n nb.fit(X_train, y_train)\n print('✅ Naive Bayes trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 35,
+    "description": "Train GradientBoostingClassifier (auto)",
+    "code": "from sklearn.ensemble import GradientBoostingClassifier\ntry:\n gb = GradientBoostingClassifier()\n gb.fit(X_train, y_train)\n print('✅ Gradient Boosting trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 36,
+    "description": "Train LightGBM model (auto, if available)",
+    "code": "try:\n import lightgbm as lgb\n lgb_model = lgb.LGBMClassifier()\n lgb_model.fit(X_train, y_train)\n print('✅ LightGBM trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 37,
+    "description": "Evaluate model with accuracy score (auto)",
+    "code": "from sklearn.metrics import accuracy_score\ntry:\n acc = accuracy_score(y_test, model.predict(X_test))\n print('✅ Accuracy:', format(acc, '.4f'))\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 38,
+    "description": "Auto-choose best classifier (based on cross_val_score)",
+    "code": "from sklearn.model_selection import cross_val_score\nfrom sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier\ntry:\n models = {'rf': RandomForestClassifier(), 'gb': GradientBoostingClassifier()}\n best = max(models.items(), key=lambda x: cross_val_score(x[1], X, y, cv=3).mean())\n print('🏆 Best:', best[0])\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 39,
+    "description": "Automatically save predictions to CSV",
+    "code": "try:\n preds = model.predict(X_test)\n out = pd.DataFrame({'prediction': preds})\n out.to_csv('predictions.csv', index=False)\n print('✅ Saved to predictions.csv')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 40,
+    "description": "Create Kaggle-style submission file",
+    "code": "try:\n submission = pd.DataFrame()\n submission['Id'] = X_test.index\n submission['Target'] = model.predict(X_test)\n submission.to_csv('submission.csv', index=False)\n print('✅ submission.csv ready')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 41,
+    "description": "Train Linear Regression model (auto)",
+    "code": "from sklearn.linear_model import LinearRegression\ntry:\n lr = LinearRegression()\n lr.fit(X_train, y_train)\n print('✅ Linear Regression trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 42,
+    "description": "Train Ridge Regression model (auto)",
+    "code": "from sklearn.linear_model import Ridge\ntry:\n ridge = Ridge()\n ridge.fit(X_train, y_train)\n print('✅ Ridge trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 43,
+    "description": "Plot residuals for regression model",
+    "code": "try:\n pred = model.predict(X_test)\n res = y_test - pred\n sns.histplot(res, kde=True)\n plt.title('Residuals Distribution')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 44,
+    "description": "Export trained model using joblib",
+    "code": "import joblib\ntry:\n joblib.dump(model, 'model.joblib')\n print('✅ Model saved.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 45,
+    "description": "Reload model from saved file",
+    "code": "import joblib\ntry:\n model = joblib.load('model.joblib')\n print('✅ Model loaded.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 46,
+    "description": "Simple SHAP-style explanation using feature importance",
+    "code": "try:\n imp = model.feature_importances_ if hasattr(model, 'feature_importances_') else None\n if imp is not None:\n  for f, i in sorted(zip(X.columns, imp), key=lambda x: -x[1])[:10]:\n   print(f'{f}: {i:.4f}')\n else:\n  print('⚠️ No feature importances found.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 47,
+    "description": "Light hyperparameter tuning with GridSearchCV (RandomForest)",
+    "code": "from sklearn.model_selection import GridSearchCV\nfrom sklearn.ensemble import RandomForestClassifier\ntry:\n grid = GridSearchCV(RandomForestClassifier(), {'n_estimators': [50,100]}, cv=3)\n grid.fit(X_train, y_train)\n print('✅ Best:', grid.best_params_)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 48,
+    "description": "Detect and print outliers using IQR on all numeric columns. Use this to identify extreme values in the dataset.",
+    "code": "try:\n numeric_cols = df.select_dtypes(include='number').columns\n for col in numeric_cols:\n  q1 = df[col].quantile(0.25)\n  q3 = df[col].quantile(0.75)\n  iqr = q3 - q1\n  outliers = df[(df[col] < q1 - 1.5 * iqr) | (df[col] > q3 + 1.5 * iqr)]\n  if not outliers.empty:\n   print(col, ':', len(outliers), 'outliers')\n print('✅ Outlier check done.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 49,
+    "description": "List all CSV/JSON datasets in current directory",
+    "code": "import os\nfiles = [f for f in os.listdir() if f.endswith(('.csv', '.json'))]\nprint('📁 Available datasets:')\nfor f in files: print(f)",
+    "mode": "auto"
+  },
+  {
+    "id": 50,
+    "description": "Automatically load train/test datasets by filename",
+    "code": "try:\n files = [f for f in os.listdir() if f.endswith('.csv')]\n for f in files:\n  name = f.lower()\n  df_name = 'df_train' if 'train' in name else 'df_test' if 'test' in name else 'df_' + name.replace('.csv','')\n  globals()[df_name] = pd.read_csv(f)\n  print('✅ Loaded', df_name, ':', globals()[df_name].shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 51,
+    "description": "Join two datasets on common column (e.g., 'id')",
+    "code": "try:\n common_keys = set(df_train.columns).intersection(df_test.columns)\n key = 'id' if 'id' in common_keys else list(common_keys)[0]\n df_merged = pd.merge(df_train, df_test, on=key, how='left')\n print('✅ Merged. Shape:', df_merged.shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 52,
+    "description": "Manually merge two datasets on custom key",
+    "code": "df_merged = pd.merge(df1, df2, on='your_key_column')\n# Replace df1, df2, and 'your_key_column' as needed",
+    "mode": "manual"
+  },
+  {
+    "id": 53,
+    "description": "Make predictions on separate df_test and save for submission",
+    "code": "try:\n preds = model.predict(df_test.drop(columns=[col for col in df_test.columns if col == 'id']))\n out = pd.DataFrame({'Id': df_test['id'], 'Target': preds})\n out.to_csv('submission.csv', index=False)\n print('✅ submission.csv saved.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 54,
+    "description": "Parse and convert datetime columns automatically",
+    "code": "try:\n dt_cols = [col for col in df.columns if 'date' in col.lower() or 'time' in col.lower()]\n for col in dt_cols:\n  df[col] = pd.to_datetime(df[col], errors='coerce')\n print('✅ Converted datetime columns:', dt_cols)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 55,
+    "description": "Manually convert a column to datetime",
+    "code": "df['your_datetime_column'] = pd.to_datetime(df['your_datetime_column'])",
+    "mode": "manual"
+  },
+  {
+    "id": 56,
+    "description": "Create time-based features from datetime column",
+    "code": "try:\n col = df.select_dtypes(include='datetime').columns[0]\n df['year'] = df[col].dt.year\n df['month'] = df[col].dt.month\n df['dayofweek'] = df[col].dt.dayofweek\n print('✅ Extracted year, month, dayofweek')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 57,
+    "description": "Plot a time series line chart (auto)",
+    "code": "try:\n col = df.select_dtypes(include='datetime').columns[0]\n val = df.select_dtypes(include='number').columns[0]\n df.sort_values(col).plot(x=col, y=val, figsize=(10,4))\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 58,
+    "description": "Plot any two columns manually",
+    "code": "df.plot(x='your_x_column', y='your_y_column')\nplt.tight_layout()\nplt.show()",
+    "mode": "manual"
+  },
+  {
+    "id": 59,
+    "description": "Perform train/validation/test split from multiple datasets",
+    "code": "try:\n df_full = pd.concat([df_train, df_val], ignore_index=True)\n X = df_full.drop(columns=[target_col])\n y = df_full[target_col]\n X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)\n print('✅ Split into train/val sets')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 60,
+    "description": "Join reference table to dataset by key column",
+    "code": "try:\n ref_key = 'your_key_column'\n df = df.merge(reference_df, on=ref_key, how='left')\n print('✅ Joined with reference table.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "manual"
+  },
+  {
+    "id": 61,
+    "description": "Plot boxplots for top 3 numeric features by target",
+    "code": "try:\n nums = df.select_dtypes(include='number').columns[:3]\n for col in nums:\n  sns.boxplot(x=target_col, y=col, data=df)\n  plt.title(col + ' by ' + target_col)\n  plt.tight_layout()\n  plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 62,
+    "description": "Plot scatter plot manually between any 2 columns",
+    "code": "plt.scatter(df['your_x'], df['your_y'])\nplt.xlabel('your_x')\nplt.ylabel('your_y')\nplt.title('Scatter Plot')\nplt.tight_layout()\nplt.show()",
+    "mode": "manual"
+  },
+  {
+    "id": 63,
+    "description": "Plot KDE distribution for top numeric columns",
+    "code": "try:\n for col in df.select_dtypes(include='number').columns[:2]:\n  sns.kdeplot(df[col], fill=True)\n  plt.title(col + ' distribution')\n  plt.tight_layout()\n  plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 64,
+    "description": "Manual KDE plot for a specified numeric column",
+    "code": "sns.kdeplot(df['your_column'], fill=True)\nplt.title('KDE Plot')\nplt.tight_layout()\nplt.show()",
+    "mode": "manual"
+  },
+  {
+    "id": 65,
+    "description": "Train linear regression model",
+    "code": "from sklearn.linear_model import LinearRegression\ntry:\n model = LinearRegression()\n model.fit(X_train, y_train)\n print('✅ Linear Regression trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 66,
+    "description": "Train Ridge regression model",
+    "code": "from sklearn.linear_model import Ridge\ntry:\n model = Ridge()\n model.fit(X_train, y_train)\n print('✅ Ridge Regression trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 67,
+    "description": "Train Lasso regression model",
+    "code": "from sklearn.linear_model import Lasso\ntry:\n model = Lasso()\n model.fit(X_train, y_train)\n print('✅ Lasso Regression trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 68,
+    "description": "Plot violin plots for top numeric columns grouped by target",
+    "code": "try:\n for col in df.select_dtypes(include='number').columns[:3]:\n  sns.violinplot(x=target_col, y=col, data=df)\n  plt.title(col + ' by ' + target_col)\n  plt.tight_layout()\n  plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 69,
+    "description": "Manual violin plot between any column and target",
+    "code": "sns.violinplot(x='your_target', y='your_feature', data=df)\nplt.tight_layout()\nplt.show()",
+    "mode": "manual"
+  },
+  {
+    "id": 70,
+    "description": "Train ExtraTrees model",
+    "code": "from sklearn.ensemble import ExtraTreesClassifier\ntry:\n et = ExtraTreesClassifier()\n et.fit(X_train, y_train)\n print('✅ ExtraTrees trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 71,
+    "description": "Run SHAP summary plot if model is tree-based",
+    "code": "try:\n import shap\n explainer = shap.TreeExplainer(model)\n shap_values = explainer.shap_values(X_train)\n shap.summary_plot(shap_values, X_train)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 72,
+    "description": "Run permutation importance on fitted model",
+    "code": "from sklearn.inspection import permutation_importance\ntry:\n result = permutation_importance(model, X_test, y_test, n_repeats=10, random_state=0)\n for i in result.importances_mean.argsort()[::-1][:5]:\n  print(X.columns[i], ':', format(result.importances_mean[i], '.4f'))\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 73,
+    "description": "Plot swarm plot of top feature vs target",
+    "code": "try:\n col = df.select_dtypes(include='number').columns[0]\n sns.swarmplot(x=target_col, y=col, data=df)\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 74,
+    "description": "Time series trend decomposition only if dataetime column is there in dataset else go for histogram",
+    "code": "try:\n from statsmodels.tsa.seasonal import seasonal_decompose\n ts_col = df.select_dtypes(include='number').columns[0]\n dt_col = df.select_dtypes(include='datetime').columns[0]\n df.sort_values(dt_col, inplace=True)\n df.set_index(dt_col, inplace=True)\n result = seasonal_decompose(df[ts_col].dropna(), model='additive')\n result.plot()\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 75,
+    "description": "Manual decomposition of time series column  only if dataetime column is there in dataset else go for histogram",
+    "code": "from statsmodels.tsa.seasonal import seasonal_decompose\ndf.set_index('your_datetime_column', inplace=True)\ndecomp = seasonal_decompose(df['your_series_column'], model='additive')\ndecomp.plot()\nplt.tight_layout()\nplt.show()",
+    "mode": "manual"
+  },
+  {
+    "id": 76,
+    "description": "Train RidgeClassifier for fast classification",
+    "code": "from sklearn.linear_model import RidgeClassifier\ntry:\n rc = RidgeClassifier()\n rc.fit(X_train, y_train)\n print('✅ RidgeClassifier trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 77,
+    "description": "Train SGDClassifier for efficient linear classification",
+    "code": "from sklearn.linear_model import SGDClassifier\ntry:\n sgd = SGDClassifier(max_iter=1000, tol=1e-3)\n sgd.fit(X_train, y_train)\n print('✅ SGDClassifier trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 78,
+    "description": "Train LightGBM regressor (resource-efficient)",
+    "code": "try:\n import lightgbm as lgb\n lgbm = lgb.LGBMRegressor()\n lgbm.fit(X_train, y_train)\n print('✅ LightGBM Regressor trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 79,
+    "description": "Train VotingClassifier with 3 models",
+    "code": "from sklearn.ensemble import VotingClassifier\ntry:\n from sklearn.linear_model import LogisticRegression\n from sklearn.ensemble import RandomForestClassifier\n from sklearn.naive_bayes import GaussianNB\n\n vc = VotingClassifier(estimators=[\n  ('lr', LogisticRegression(max_iter=200)),\n  ('rf', RandomForestClassifier(n_estimators=50)),\n  ('nb', GaussianNB())\n ], voting='soft')\n\n vc.fit(X_train, y_train)\n print('✅ VotingClassifier trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 80,
+    "description": "Train StackingClassifier",
+    "code": "from sklearn.ensemble import StackingClassifier\ntry:\n from sklearn.linear_model import LogisticRegression\n from sklearn.tree import DecisionTreeClassifier\n from sklearn.svm import SVC\n\n base = [\n  ('dt', DecisionTreeClassifier()),\n  ('svm', SVC(probability=True))\n ]\n final = LogisticRegression()\n\n stack = StackingClassifier(estimators=base, final_estimator=final)\n stack.fit(X_train, y_train)\n print('✅ StackingClassifier trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 81,
+    "description": "Perform memory usage check on dataset",
+    "code": "try:\n mem = df.memory_usage(deep=True).sum() / 1024**2\n print('💾 Memory Usage:', format(mem, '.2f'), 'MB')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 82,
+    "description": "Downcast numeric columns to reduce memory footprint",
+    "code": "try:\n for col in df.select_dtypes(include='number'):\n  df[col] = pd.to_numeric(df[col], downcast='float')\n print('✅ Downcasted numeric columns.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 83,
+    "description": "Manual prediction with trained model",
+    "code": "input_data = [[val1, val2, val3]]  # Replace with actual values\ntry:\n pred = model.predict(input_data)\n print('🔮 Prediction:', pred[0])\nexcept Exception as e:\n print('❌', e)",
+    "mode": "manual"
+  },
+  {
+    "id": 84,
+    "description": "Auto-benchmark multiple classifiers on small dataset",
+    "code": "from sklearn.model_selection import cross_val_score\ntry:\n from sklearn.linear_model import LogisticRegression\n from sklearn.naive_bayes import GaussianNB\n from sklearn.ensemble import RandomForestClassifier\n\n models = {\n  'LogReg': LogisticRegression(),\n  'NB': GaussianNB(),\n  'RF': RandomForestClassifier()\n }\n for name, clf in models.items():\n  score = cross_val_score(clf, X, y, cv=3).mean()\n  print(name, ':', format(score, '.4f'))\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 85,
+    "description": "Automatically detect numeric column with highest variance",
+    "code": "try:\n var_col = df.select_dtypes(include='number').var().sort_values(ascending=False).index[0]\n print('📊 Highest variance column:', var_col)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 86,
+    "description": "Handle class imbalance using class_weight in LogisticRegression",
+    "code": "from sklearn.linear_model import LogisticRegression\ntry:\n model = LogisticRegression(class_weight='balanced', max_iter=300)\n model.fit(X_train, y_train)\n print('✅ Balanced LogisticRegression trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 87,
+    "description": "Apply SMOTE for oversampling the minority class",
+    "code": "try:\n from imblearn.over_sampling import SMOTE\n sm = SMOTE(random_state=42)\n X_res, y_res = sm.fit_resample(X_train, y_train)\n print('✅ After SMOTE:', X_res.shape, ',', y_res.shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 88,
+    "description": "Export DataFrame to Excel file",
+    "code": "try:\n df.to_excel('output.xlsx', index=False)\n print('✅ Data exported to output.xlsx')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 89,
+    "description": "Export DataFrame to JSON file",
+    "code": "try:\n df.to_json('output.json', orient='records', lines=True)\n print('✅ Data exported to output.json')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 90,
+    "description": "Train classifier with early stopping using XGBoost",
+    "code": "try:\n from xgboost import XGBClassifier\n xgb = XGBClassifier(early_stopping_rounds=10)\n xgb.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)\n print('✅ XGBoost with early stopping trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 91,
+    "description": "Train LightGBM with categorical features",
+    "code": "try:\n import lightgbm as lgb\n cat_feats = X.select_dtypes(include='object').columns.tolist()\n lgbm = lgb.LGBMClassifier()\n lgbm.fit(X_train, y_train, categorical_feature=cat_feats)\n print('✅ LightGBM with categorical features trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 92,
+    "description": "Train LGBMRegressor with early stopping",
+    "code": "try:\n import lightgbm as lgb\n reg = lgb.LGBMRegressor(early_stopping_rounds=10)\n reg.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)\n print('✅ LGBMRegressor trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 93,
+    "description": "Stack classifier with lightweight base models",
+    "code": "from sklearn.ensemble import StackingClassifier\ntry:\n from sklearn.linear_model import SGDClassifier\n from sklearn.naive_bayes import GaussianNB\n base = [('sgd', SGDClassifier()), ('nb', GaussianNB())]\n final = LogisticRegression()\n stack = StackingClassifier(estimators=base, final_estimator=final)\n stack.fit(X_train, y_train)\n print('✅ Lightweight StackingClassifier trained.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 94,
+    "description": "Export model predictions as Markdown file",
+    "code": "try:\n preds = model.predict(X_test)\n pd.DataFrame({'prediction': preds}).to_markdown('predictions.md')\n print('✅ Markdown exported.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 95,
+    "description": "Plot prediction vs actual for regression tasks",
+    "code": "try:\n y_pred = model.predict(X_test)\n plt.scatter(y_test, y_pred)\n plt.xlabel('Actual')\n plt.ylabel('Predicted')\n plt.title('Actual vs Predicted')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 96,
+    "description": "Join two datasets on common column — use this when merging training data with labels or metadata.",
+    "code": "try:\n merged = pd.merge(df1, df2, on='common_column', how='inner')\n print('✅ Merged shape:', merged.shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "manual"
+  },
+  {
+    "id": 97,
+    "description": "Automatically detect and join two datasets if they share common columns — helpful for multi-part datasets.",
+    "code": "try:\n join_key = list(set(df1.columns) & set(df2.columns))[0]\n merged = pd.merge(df1, df2, on=join_key)\n print('✅ Joined on', join_key, ', shape:', merged.shape)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 98,
+    "description": "Export DataFrame to Excel — use when sharing results with non-technical stakeholders.",
+    "code": "try:\n df.to_excel('output.xlsx', index=False)\n print('✅ Saved to output.xlsx')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 99,
+    "description": "Export DataFrame to JSON — use for API integration or structured output.",
+    "code": "try:\n df.to_json('data.json', orient='records')\n print('✅ Saved to data.json')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 100,
+    "description": "Export summary statistics to Markdown file — useful for model documentation.",
+    "code": "try:\n with open('summary.md', 'w') as f:\n  f.write(df.describe().to_markdown())\n print('✅ Summary exported.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 101,
+    "description": "Convert datetime column and extract date parts — use this when working with time series or event logs.  only if dataetime column is there in dataset else go for histogram",
+    "code": "try:\n col = df.select_dtypes(include='object').columns[0]\n df[col] = pd.to_datetime(df[col], errors='coerce')\n df['year'] = df[col].dt.year\n df['month'] = df[col].dt.month\n df['day'] = df[col].dt.day\n print('✅ Datetime features extracted.')\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 102,
+    "description": "Line plot of metric over time — use to visualize change across periods like sales, visitors, etc.",
+    "code": "try:\n col = df.select_dtypes(include='datetime').columns[0]\n val = df.select_dtypes(include='number').columns[0]\n df.sort_values(col).plot(x=col, y=val)\n plt.title(val + ' over time')\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 103,
+    "description": "Scatter matrix for all numeric features — useful to inspect pairwise feature relationships.",
+    "code": "from pandas.plotting import scatter_matrix\ntry:\n scatter_matrix(df.select_dtypes(include='number'), figsize=(10, 8))\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "neutral"
+  },
+  {
+    "id": 104,
+    "description": "Advanced correlation filter — use this to detect and drop redundant features before modeling.",
+    "code": "try:\n corr = df.select_dtypes(include='number').corr().abs()\n upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))\n drop_cols = [c for c in upper.columns if any(upper[c] > 0.95)]\n df.drop(columns=drop_cols, inplace=True)\n print('✅ Dropped correlated columns:', drop_cols)\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  },
+  {
+    "id": 105,
+    "description": "Automatically detect and plot most predictive numeric column vs target — good for insight discovery.",
+    "code": "try:\n corr = df.corr(numeric_only=True)[target_col].abs().sort_values(ascending=False)\n feat = corr.index[1]\n sns.scatterplot(x=feat, y=target_col, data=df)\n plt.title(feat + ' vs ' + target_col)\n plt.tight_layout()\n plt.show()\nexcept Exception as e:\n print('❌', e)",
+    "mode": "auto"
+  }
+]

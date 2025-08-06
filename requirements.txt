@@ -1,0 +1,40 @@
+# Core web framework
+streamlit
+
+# Data science and analysis
+pandas
+numpy
+matplotlib
+seaborn
+
+# Machine learning
+scikit-learn
+sentence-transformers
+faiss-cpu
+
+# LangChain and vector databases
+langchain-community
+langchain-ollama
+
+# Jupyter notebook management
+nbformat
+nbclient
+jupyter-client
+
+# Data validation
+pydantic
+
+# AI/LLM integration
+ollama
+
+# Logging
+loguru
+
+# Optional ML libraries
+xgboost
+lightgbm
+shap
+imbalanced-learn
+statsmodels
+joblib
+plotly
