@@ -72,7 +72,7 @@ ollama pull gemma3n:e2b && ollama nomic-embed-text:v1.5
 ### *Verify Model Installation:*
 Check if models are properly installed by running: `ollama list`
 ```shell
-ollama ollama list
+ollama list
 ```
 
 > [!NOTE]
