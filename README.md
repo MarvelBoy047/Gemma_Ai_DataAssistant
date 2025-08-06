@@ -329,4 +329,3 @@ This project is licensed under the **MIT License**. See the `LICENSE` file for d
 
 ## 📞 **Contact & Support**
 - **GitHub Issues**: For bugs and feature requests, please **[open an issue](https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant/issues)**.
-- **Discord**: Join our **[Community Chat Server](https://discord.gg/your-server)** for help and discussion.
