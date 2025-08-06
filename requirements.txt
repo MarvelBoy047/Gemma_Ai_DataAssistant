@@ -1,5 +1,7 @@
 # Core web framework
 streamlit
+# Core backgound framework
+jupyter
 
 # Data science and analysis
 pandas
@@ -39,4 +41,5 @@ imbalanced-learn
 statsmodels
 joblib
 plotly
+
 
