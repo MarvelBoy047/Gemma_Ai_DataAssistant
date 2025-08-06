@@ -65,21 +65,17 @@ pip --version
 ### *Download Required AI Models:*
 Open *Command Prompt* or *PowerShell* as Administrator and run these commands one by one:
 
-
-ollama pull gemma3n:e2b
-
-Wait for the first model to complete, then run:
-
-ollama pull nomic-embed-text:v1.5
-
+```
+ollama pull gemma3n:e2b & ollama pull nomic-embed-text:v1.5
+```
 
 ### *Verify Model Installation:*
 Check if models are properly installed by running:
-
+```
 ollama list
+```
 
-
-*Expected Output:*
+*Expected Output: almost*
 
 NAME                     ID              SIZE      MODIFIED
 gemma3n:e2b              abc123def456    5.6 GB    2 hours ago
@@ -88,9 +84,9 @@ nomic-embed-text:v1.5    789xyz012345    274 MB    2 hours ago
 
 ### *Start Ollama Service:*
 Keep Ollama running in the background:
-
+```
 ollama serve
-
+```
 
 > *💡 Tip*: Keep this terminal window open and running in the background for optimal performance. You can minimize it but don't close it.
 
@@ -100,10 +96,10 @@ ollama serve
 
 ### *Method 1: Git Clone (Recommended)*
 Open a new Command Prompt or PowerShell window and run:
-
+```
 git clone https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant.git
 
-
+```
 ### *Method 2: Direct Download*
 1. Visit: [https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant](https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant)
 2. Click *"Code"* → *"Download ZIP"*
@@ -114,12 +110,11 @@ git clone https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant.git
 ## 🔧 *Step 5: Install Dependencies*
 
 Navigate to the project directory and install required packages:
+```
+cd Gemma_Ai_DataAssistant & pip install -r requirements.txt
+```
 
-cd Gemma_Ai_DataAssistant
-pip install -r requirements.txt
-
-
-> *⏳ Note*: This process may take 5-10 minutes depending on your internet speed.
+> *⏳ Note*: This process may take 5-10 minutes depending on your internet speed. and system performance
 
 ---
 
@@ -127,9 +122,9 @@ pip install -r requirements.txt
 
 ### *Start the Application:*
 In the project directory, run:
-
+```
 streamlit run app.py
-
+```
 
 ### *Initial Setup Process:*
 ![Initial Setup](assets/1.png)
@@ -141,7 +136,7 @@ streamlit run app.py
 
 ### *Access the Application:*
 - Your default browser will automatically open
-- Navigate to: http://localhost:8501
+- Navigate to: http://localhost:8501 *It will open up page automatically mostly*
 - The application interface will be ready for use
 
 ---
@@ -187,7 +182,8 @@ If you experience disk space issues after extended use:
 2. *Clear Application Cache*:
    - Navigate to the project folder
    - Delete contents of agent_memory/ and chat_history/ if needed
-
+>[!CAUTION]
+>NEVER DELTE THE knowledge_base.json file it is important brain of the Gemma
 ### *Performance Considerations:*
 - *Task Size Impact*: Smaller analysis requests = faster responses
 - *Memory Usage*: Large datasets may require more RAM
@@ -234,4 +230,3 @@ If you experience disk space issues after extended use:
 ---
 
 *🎉 Congratulations! You're now ready to harness the power of AI-driven data analysis with complete privacy and professional-grade results.*
-```
