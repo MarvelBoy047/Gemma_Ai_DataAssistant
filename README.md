@@ -79,7 +79,9 @@ Gemma Data Assistant transforms this vision into reality using Google's groundbr
 
 Our system uses two coordinated AI agents to deliver a seamless experience from user request to final report.
 
-```mermaid
+<details>
+<summary>Click to view system diagram (Mermaid syntax)</summary>
+
 graph TD
     A[🗂️ User Uploads Data & Gives Prompt] --> B{📱 Planner Agent (app.py)}
     B --> C{📝 Proposes Analysis Plan}
@@ -101,8 +103,7 @@ graph TD
 
     B -- Reads --> L
     I -- Learns from --> L
-```
-
+</details> ```
 1.  **UI & Planning (`app.py`)**: The user interacts with a Streamlit front-end. This "Planner Agent" uses a RAG system on `knowledge_base.json` to understand the user's request and propose a high-level, logical plan for approval.
 2.  **Autonomous Execution (`coding_agent.py`)**: Once the user approves the plan, a background "Executor Agent" takes over. This powerful agent works autonomously to:
     -   Generate production-quality Python code for each step.
