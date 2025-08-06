@@ -1,10 +1,21 @@
+Of course. Based on my comprehensive analysis of your project's architecture and code, I have enhanced your `README.md` file to be more technically accurate, impactful for the hackathon judges, and structured with the requested admonition blocks.
+
+The key changes include:
+*   **Clarified Architecture:** The "How It Works" section now accurately reflects the two-agent (Planner & Executor) system from your Python code.
+*   **Isolated Installation:** The "Quick Start" section is now a concise guide, with a prominent note linking to a more detailed installation document, as you requested.
+*   **Strategic Admonitions:** `[!NOTE]`, `[!IMPORTANT]`, `[!TIP]`, and `[!WARNING]` blocks have been added to highlight crucial information, guide the user, and add professional polish.
+*   **Technical Accuracy:** The file structure and technical descriptions have been updated to precisely match the provided `app.py` and `coding_agent.py` files.
+
+Here is the enhanced `README.md`:
+
+---
 
 # 🤖 Gemma Data Assistant: Democratizing AI-Powered Data Science
 
 **Your Personal, Private, and Powerful AI Data Scientist - Built for Impact**
 
 [![Gemma 3n](https://img.shields.io/badge/Powered%20by-Gemma%203n-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/gemma)
-[![Offline First](https://img.shields.io/badge/100%25-Offline%20%26%20Private-green?style=for-the-badge&logo=shield)](https://github.com/your-username/gemma-data-assistant)
+[![Offline First](https://img.shields.io/badge/100%25-Offline%20%26%20Private-green?style=for-the-badge&logo=shield)](https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant)
 [![Open Source](https://img.shields.io/badge/Open%20Source-MIT-blue?style=for-the-badge&logo=opensource)](https://opensource.org/licenses/MIT)
 
 > **"What if every person, regardless of their technical background, could have access to a world-class data scientist that works entirely on their device, never sharing their private information, and costs nothing to use?"**
@@ -16,19 +27,14 @@ Gemma Data Assistant transforms this vision into reality using Google's groundbr
 ## 🌍 **The Global Impact Challenge We're Solving**
 
 ### **The Problem: Data Science Inequality**
-- **98% of small businesses** lack access to professional data analysis capabilities
-- **Medical researchers in developing countries** can't afford expensive cloud AI services
-- **Students and educators** are blocked by subscription fees and internet requirements
-- **Privacy-sensitive organizations** (healthcare, finance, government) can't use cloud-based AI tools
-- **Rural areas with limited internet** are excluded from the AI revolution
+- **98% of small businesses** lack access to professional data analysis capabilities.
+- **Medical researchers in developing countries** can't afford expensive cloud AI services.
+- **Students and educators** are blocked by subscription fees and internet requirements.
+- **Privacy-sensitive organizations** (healthcare, finance, government) can't use cloud-based AI tools.
+- **Rural areas with limited internet** are excluded from the AI revolution.
 
-### **Our Solution: AI-Powered Data Democracy**
-Gemma Data Assistant eliminates these barriers by providing:
-- ✅ **Zero-cost operation** after initial setup
-- ✅ **Complete offline functionality** - works anywhere, anytime
-- ✅ **Bank-level privacy** - your data never leaves your device
-- ✅ **Professional-grade analysis** accessible to non-technical users
-- ✅ **Educational empowerment** for students and researchers worldwide
+> [!NOTE]
+> Our mission is to eliminate these barriers by providing a tool that is zero-cost, fully offline, and guarantees bank-level privacy by design.
 
 ---
 
@@ -38,304 +44,181 @@ Gemma Data Assistant eliminates these barriers by providing:
 > *"A rural clinic in Kenya uses Gemma Data Assistant to analyze patient outcomes and optimize treatment protocols without sending sensitive health data to external servers."*
 
 **Impact Features:**
-- Analyze patient data while maintaining HIPAA compliance
-- Identify treatment effectiveness patterns
-- Resource allocation optimization for limited-budget healthcare
-- Medical research in internet-limited regions
+- Analyze patient data while maintaining HIPAA compliance.
+- Identify treatment effectiveness patterns.
+- Optimize resource allocation for limited-budget healthcare.
 
 ### 🎓 **Education & Academic Research**
 > *"A university in Bangladesh empowers 500+ students to perform advanced statistical analysis without expensive software licenses or cloud subscriptions."*
 
 **Educational Benefits:**
-- Free access to professional data analysis tools
-- Learn by doing with real datasets
-- Jupyter notebook outputs for academic documentation
-- Offline accessibility for remote learning
+- Free access to professional data analysis tools.
+- Learn by doing with real datasets and Jupyter notebook outputs.
+- Offline accessibility for remote and underserved learning environments.
 
 ### 🌱 **Environmental & Climate Research**
 > *"Environmental scientists in the Amazon rainforest analyze deforestation patterns and climate data completely offline, ensuring sensitive location data remains secure."*
 
 **Environmental Applications:**
-- Climate change impact analysis
-- Biodiversity research and conservation
-- Environmental monitoring and reporting
-- Sustainable development planning
+- Climate change impact analysis.
+- Biodiversity research and conservation.
+- Environmental monitoring and reporting.
 
 ### 💼 **Small Business Empowerment**
 > *"A family-owned restaurant chain uses the assistant to analyze sales patterns, optimize inventory, and improve customer satisfaction without hiring expensive consultants."*
 
 **Business Intelligence:**
-- Customer behavior analysis
-- Sales forecasting and optimization
-- Inventory management
-- Marketing effectiveness measurement
-
-### 🔬 **Crisis Response & Humanitarian Aid**
-> *"During natural disasters, aid organizations analyze resource distribution and needs assessment data offline, ensuring operations continue even when internet infrastructure fails."*
-
-**Emergency Applications:**
-- Disaster response optimization
-- Resource allocation analysis
-- Population needs assessment
-- Supply chain management in crisis zones
+- Customer behavior analysis and sales forecasting.
+- Inventory management and marketing effectiveness.
 
 ---
 
 ## ⚡ **Why Gemma 3n Makes This Possible**
 
 ### **Technical Breakthrough Features:**
-- 🧠 **Mobile-First Architecture**: Designed specifically for edge devices
-- 🚀 **Efficiency Revolution**: Runs on devices with just 2GB RAM
-- 🔒 **Privacy by Design**: No data ever transmitted externally
-- 🌐 **Universal Access**: Works without internet connectivity
-- 💪 **Professional Capabilities**: Matches expensive cloud AI services
+- 🧠 **Mobile-First Architecture**: Designed specifically for edge devices.
+- 🚀 **Efficiency Revolution**: Runs on devices with just 8GB of RAM.
+- 🔒 **Privacy by Design**: No data is ever transmitted externally.
+- 🌐 **Universal Access**: Works without internet connectivity.
+- 💪 **Professional Capabilities**: Matches expensive cloud AI services.
 
-### **Our Implementation Advantages:**
-- **Autonomous Planning**: Understands context and creates intelligent analysis workflows
-- **Self-Correcting RAG System**: Fixes errors using built-in knowledge base
-- **Production-Ready Outputs**: Generates publication-quality Jupyter notebooks
-- **User-Friendly Interface**: Natural language interaction for non-technical users
+> [!TIP]
+> Our implementation takes full advantage of Gemma 3n's efficiency. The core of our system is a sophisticated dual-agent pipeline that plans and executes tasks autonomously.
 
 ---
 
-## 🚀 **How It Works: The Magic Behind the Scenes**
+## 🚀 **How It Works: The Dual-Agent Intelligence Pipeline**
 
-### **The Revolutionary Four-Stage Intelligence Pipeline:**
+Our system uses two coordinated AI agents to deliver a seamless experience from user request to final report.
 
-```
+```mermaid
 graph TD
-    A[🗂️ User Uploads Data] --> B[💬 Natural Language Request]
-    B --> C[🧠 Gemma 3n Planning Agent]
-    C --> D[💻 Autonomous Code Generation]
-    D --> E[🔧 RAG-Enhanced Error Correction]
-    E --> F[📊 Jupyter Notebook Execution]
-    F --> G[📈 Real-time Progress Updates]
-    G --> H[📋 Professional Analysis Report]
-    
-    I[📚 Knowledge Base] --> E
-    J[🔍 Vector Embeddings] --> E
-    K[⚡ FAISS Search] --> E
+    A[🗂️ User Uploads Data & Gives Prompt] --> B{📱 Planner Agent (app.py)};
+    B --> C{📝 Proposes Analysis Plan};
+    C --> D{✅ User Approves Plan};
+    D --> E{👨‍💻 Executor Agent (coding_agent.py)};
+    E --> F[1. Generates Code];
+    F --> G[2. Executes in Notebook];
+    G --> H{💥 Error?};
+    H -- Yes --> I[3. Self-Heals with RAG];
+    I --> F;
+    H -- No --> J[📊 Appends Results];
+    J --> E;
+    E -- All Tasks Done --> K[📋 Generates Final Summary & Notebook];
+
+    subgraph "Knowledge Base (RAG)"
+        L[📚 knowledge_base.json]
+        M[🔍 FAISS Vector Search]
+    end
+
+    B -- Reads --> L;
+    I -- Learns from --> L;
 ```
 
-1. **🎯 Context Understanding**
-   - Analyzes dataset structure and user intent
-   - Creates optimal analysis strategy using Gemma 3n reasoning
-
-2. **💻 Code Generation**
-   - Writes production-quality Python code
-   - Handles complex data science workflows automatically
-
-3. **🔧 Self-Correction**
-   - Detects and fixes errors using RAG system
-   - Learns from 100+ proven code patterns
-
-4. **📊 Professional Output**
-   - Generates complete Jupyter notebooks
-   - Provides actionable insights and visualizations
-
----
-
-## 🛠️ **Technical Excellence & Innovation**
-
-### **Core Architecture:**
-```
-# Revolutionary RAG-Enhanced Error Correction
-class CodeKnowledgeBase:
-    def __init__(self):
-        self.embedding_model = OllamaEmbeddings(model="nomic-embed-text:v1.5")
-        self.vector_store = FAISS.from_texts(code_patterns, self.embeddings)
-    
-    def auto_fix_error(self, error_msg, context):
-        similar_solutions = self.vector_store.similarity_search(error_msg)
-        return self.generate_corrected_code(similar_solutions, context)
-```
-
-### **Key Technical Innovations:**
-
-#### 🧠 **Autonomous Task Planning**
-- **Dynamic Analysis Strategy**: Adapts to any dataset structure
-- **Context-Aware Decisions**: Understands domain-specific requirements  
-- **Multi-Step Reasoning**: Breaks complex requests into executable tasks
-
-#### 🔄 **Self-Healing Code System**
-- **Error Pattern Recognition**: Learns from 100+ common data science issues
-- **Automated Code Repair**: Fixes bugs without human intervention
-- **Knowledge Base Evolution**: Continuously improves through usage
-
-#### ⚙️ **Optimized Execution Engine**
-- **Memory-Efficient Processing**: Handles large datasets on modest hardware
-- **Variable State Management**: Maintains context across notebook cells
-- **Real-time Progress Tracking**: Live updates during analysis
-
-#### 🎨 **Professional Output Generation**
-- **Publication-Quality Notebooks**: Ready for academic or business use
-- **Comprehensive Documentation**: Explains every step and decision
-- **Interactive Visualizations**: Professional charts and graphs
+1.  **UI & Planning (`app.py`)**: The user interacts with a Streamlit front-end. This "Planner Agent" uses a RAG system on `knowledge_base.json` to understand the user's request and propose a high-level, logical plan for approval.
+2.  **Autonomous Execution (`coding_agent.py`)**: Once the user approves the plan, a background "Executor Agent" takes over. This powerful agent works autonomously to:
+    -   Generate production-quality Python code for each step.
+    -   Execute the code within a Jupyter kernel.
+    -   **Self-Heal**: If an error occurs, it uses its own RAG-powered error correction system to search its knowledge base for a solution, rewrite the code, and try again.
+3.  **Final Output**: Once all tasks are complete, the agent generates a final summary and provides the complete, documented Jupyter notebook.
 
 ---
 
 ## 📋 **Prerequisites & System Requirements**
 
-### **Hardware Requirements:**
-```
-# Minimum Configuration (CPU Mode)
--  RAM: 4GB minimum, 8GB recommended
--  Storage: 2GB free space
--  CPU: Any modern 64-bit processor
--  Network: Initial setup only, then fully offline
+> [!IMPORTANT]
+> Your system **must** be 64-bit. An active internet connection is required only for the initial download of Ollama and the AI models. The application is 100% offline afterward.
 
-# Recommended Configuration (GPU Acceleration)
--  GPU: NVIDIA with 4GB+ VRAM (CUDA support)
--  RAM: 8GB minimum, 16GB recommended  
--  Storage: 5GB free space for models and data
--  Network: Initial model download, then offline forever
-```
+### **Hardware Requirements:**
+
+**Minimum Configuration (CPU Mode)**
+-   **RAM**: 8GB
+-   **Storage**: 10GB free space
+-   **CPU**: Any modern 64-bit processor
+
+**Recommended Configuration (GPU Acceleration)**
+-   **GPU**: NVIDIA GPU with 4GB+ VRAM (CUDA support)
+-   **RAM**: 16GB
+-   **Storage**: 10GB free space
 
 ### **Software Dependencies:**
-- **Python 3.9+** - Core programming runtime
-- **Ollama** - Local AI model server
-- **Streamlit** - Modern web interface
-- **Jupyter** - Notebook execution engine
-- **FAISS** - Vector similarity search
-- **Pandas/NumPy/Scikit-learn** - Data science stack
+- Python 3.9 - 3.11
+- Ollama
+- Streamlit
+- Jupyter, FAISS, Pandas, Scikit-learn, and other libraries listed in `requirements.txt`.
 
 ---
 
 ## 🚀 **Quick Start Guide**
 
+> [!NOTE]
+> This is a condensed guide. For a comprehensive, step-by-step walkthrough, please see the **[Installation & Setup Instructions](Installation%20setup%20Instructions.md)** file.
+
 ### **Step 1: Install Ollama & Download Models**
-```
-# 1. Download Ollama from https://ollama.com and install
-# 2. Start Ollama service
+> [!IMPORTANT]
+> The Ollama server must be running in the background for the assistant to function. The models are a one-time download.
+
+```bash
+# 1. Download and install Ollama from https://ollama.com
+
+# 2. Start the Ollama service in a separate terminal
 ollama serve
 
-# 3. Download required models (one-time setup)
-ollama pull gemma3n:e2b           # Primary reasoning model (2.7GB)
-ollama pull nomic-embed-text:v1.5 # Embedding model for RAG (274MB)
+# 3. Download the required AI models
+ollama pull gemma:2b
+ollama pull nomic-embed-text
 ```
 
 ### **Step 2: Clone Repository & Install Dependencies**
-```
-# Clone the project
-git clone https://github.com/your-username/gemma-data-assistant.git
-cd gemma-data-assistant
 
-# Create virtual environment (recommended)
+> [!TIP]
+> Using a Python virtual environment is highly recommended to avoid conflicts with other projects.
+
+```bash
+# Clone the project repository
+git clone https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant.git
+cd Gemma_Ai_DataAssistant
+
+# Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# On Windows: venv\Scripts\activate
+# On macOS/Linux: source venv/bin/activate
 
-# Install all dependencies
+# Install all required Python packages
 pip install -r requirements.txt
 ```
 
 ### **Step 3: Launch the Application**
-```
+
+```bash
 # Start the Streamlit web application
 streamlit run app.py
 
 # Your browser will automatically open to http://localhost:8501
-# The app will verify Ollama connection and model availability
-```
-
-### **Step 4: Start Your First Analysis**
-1. 📁 **Upload Dataset**: Use the sidebar to upload your CSV file
-2. 💬 **Describe Your Goal**: Tell the AI what insights you need
-3. ⏳ **Watch Magic Happen**: See real-time progress as code is generated
-4. 📊 **Review Results**: Explore the generated Jupyter notebook
-5. 💾 **Save & Share**: Download your professional analysis report
-
----
-
-## 💡 **Usage Examples & Real Impact**
-
-### **📈 Business Intelligence Analysis**
-```
-🗣️ User Input: 
-"Analyze our sales data to find the most profitable products and customer segments"
-
-🤖 AI Response: Creates comprehensive analysis including:
--  Revenue trend analysis with seasonal decomposition
--  Customer segmentation using K-means clustering
--  Product profitability matrix with ROI calculations
--  Predictive models for future sales forecasting
--  Executive summary with actionable recommendations
-```
-
-### **🔬 Scientific Research Support**
-```
-🗣️ User Input: 
-"Analyze this medical trial data for treatment effectiveness and side effects"
-
-🤖 AI Response: Generates rigorous statistical analysis:
--  Hypothesis testing with appropriate methods (t-tests, chi-square)
--  Effect size calculations with confidence intervals
--  Survival analysis and Kaplan-Meier curves
--  Multivariate regression for confounding factors
--  Publication-ready figures and statistical tables
-```
-
-### **🎓 Educational Data Exploration**
-```
-🗣️ User Input: 
-"Help me understand what patterns exist in this student performance dataset"
-
-🤖 AI Response: Provides comprehensive exploration:
--  Descriptive statistics and data quality assessment
--  Correlation analysis with interactive heatmaps
--  Distribution analysis for all variables
--  Feature importance using multiple methods
--  Educational insights and learning recommendations
-```
-
-### **🌍 Environmental Impact Assessment**
-```
-🗣️ User Input: 
-"Analyze this climate data to identify temperature trends and anomalies"
-
-🤖 AI Response: Delivers climate science analysis:
--  Time series decomposition showing long-term trends
--  Anomaly detection using statistical methods
--  Seasonal pattern analysis and visualization
--  Climate change indicators and significance testing
--  Policy-relevant insights and recommendations
 ```
 
 ---
 
 ## 🏗️ **Project Architecture & File Structure**
 
+This project is organized into a front-end UI and a back-end intelligence engine.
+
 ```
-gemma-data-assistant/
+Gemma_Ai_DataAssistant/
 │
-├── 📱 Frontend Layer
-│   ├── app.py                    # Streamlit web interface
-│   └── ui_components/            # Custom UI elements
+├── 📱 app.py                  # Main Streamlit UI, chat logic, and "Planner Agent"
 │
-├── 🧠 Intelligence Engine
-│   ├── coding_agent.py           # Core AI reasoning engine
-│   ├── planner_system.py         # Task planning and orchestration
-│   └── knowledge_base.json       # RAG knowledge repository (100+ patterns)
+├── 🧠 coding_agent.py          # "Executor Agent" with self-healing and notebook execution
 │
-├── ⚙️ Execution Framework
-│   ├── notebook_manager.py       # Jupyter notebook handling
-│   ├── execution_engine.py       # Code execution with error recovery
-│   └── memory_manager.py         # Session and state management
+├── 📚 knowledge_base.json     # RAG database with 100+ code patterns for planning & fixing
 │
-├── 🔍 RAG & Vector Search
-│   ├── vector_store/             # FAISS embeddings storage
-│   ├── embedding_utils.py        # Text embedding utilities
-│   └── similarity_search.py      # Error pattern matching
+├── requirements.txt          # All Python dependencies for pip
 │
-├── 💾 Data & Sessions
-│   ├── chat_history/            # User conversation logs
-│   ├── notebooks/               # Generated Jupyter notebooks
-│   ├── agent_memory/            # AI decision logs
-│   └── uploads/                 # User dataset storage
+├── 🗂️ chat_history/           # Stores JSON logs of user conversations
 │
-└── 📋 Configuration
-    ├── requirements.txt         # Python dependencies
-    ├── config.yaml              # Application settings
-    └── README.md               # This documentation
+├── 🗂️ notebooks/              # Stores the generated .ipynb notebook files
+│
+└── 🗂️ agent_memory/           # Detailed logs of the Executor Agent's decisions
 ```
 
 ---
@@ -343,90 +226,21 @@ gemma-data-assistant/
 ## ✨ **Key Features & Capabilities**
 
 ### **🎯 Intelligent Analysis Planning**
-- **Context-Aware Strategy**: Analyzes your dataset structure and creates optimal workflows
-- **Domain Adaptation**: Adjusts approach based on data type (business, scientific, educational)
-- **Multi-Step Reasoning**: Breaks complex requests into logical, executable sequences
-- **Goal-Oriented Planning**: Focuses on delivering actionable insights, not just charts
+- **Context-Aware Strategy**: Analyzes your dataset structure and creates optimal workflows.
+- **Goal-Oriented Planning**: Focuses on delivering actionable insights, not just charts.
 
 ### **💻 Advanced Code Generation**
-- **Production-Quality Python**: Generates clean, documented, professional code
-- **Library Intelligence**: Automatically selects appropriate tools (pandas, scikit-learn, seaborn)
-- **Error Prevention**: Proactively avoids common pitfalls in data science workflows
-- **Best Practices**: Follows industry standards for reproducible analysis
+- **Production-Quality Python**: Generates clean, documented, professional code.
+- **Library Intelligence**: Automatically selects appropriate tools (pandas, scikit-learn, etc.).
 
 ### **🔧 Self-Healing Error Recovery**
-- **Automatic Bug Detection**: Identifies and diagnoses code execution failures
-- **RAG-Powered Solutions**: Searches 100+ proven fixes for similar problems
-- **Context-Aware Repair**: Considers your specific data and goals when fixing errors
-- **Learning System**: Improves error recovery based on successful corrections
+- **Automatic Bug Detection**: Identifies and diagnoses code execution failures.
+- **RAG-Powered Solutions**: Searches 100+ proven fixes for similar problems.
+- **Context-Aware Repair**: Considers your specific data when fixing errors.
 
-### **📊 Professional Output Generation**
-- **Complete Jupyter Notebooks**: Ready for sharing, presentation, or publication
-- **Rich Visualizations**: Interactive charts, graphs, and statistical plots
-- **Comprehensive Documentation**: Explains methodology and interprets results
-- **Executive Summaries**: Distills complex analysis into actionable insights
-
-### **🔒 Privacy & Security Features**
-- **Zero Data Transmission**: All processing happens locally on your device
-- **No Cloud Dependencies**: Works completely offline after initial setup
-- **Secure Storage**: Data and results stored locally with user control
-- **GDPR/HIPAA Ready**: Meets strictest privacy compliance requirements
-
----
-
-## 🎯 **Impact Metrics & Success Stories**
-
-### **Measurable Global Impact:**
-```
-🌍 Accessibility
--  50+ countries with limited internet access can now use advanced AI
--  $0 ongoing costs vs. $100-500/month for cloud AI services
--  24/7 availability regardless of internet connectivity
-
-📚 Educational Empowerment  
--  1000+ students gain access to professional data science tools
--  90% reduction in learning barriers for statistical analysis
--  Real-world skills development with industry-standard outputs
-
-🏥 Healthcare Innovation
--  HIPAA-compliant analysis for sensitive medical data
--  Rural clinics can perform advanced patient outcome studies
--  Medical research possible in resource-constrained environments
-
-🌱 Environmental Research
--  Climate scientists in remote locations can analyze data
--  Conservation efforts enhanced with local processing capabilities
--  Environmental monitoring without data privacy concerns
-```
-
-### **Technical Performance Metrics:**
-- **⚡ Speed**: 10x faster than cloud alternatives (no network latency)
-- **💰 Cost**: 95% cost reduction compared to commercial solutions
-- **🎯 Accuracy**: Matches professional data scientist output quality
-- **🔒 Privacy**: 100% data retention on user devices
-
----
-
-## 🔧 **Advanced Configuration & Customization**
-
-### **Knowledge Base Expansion:**
-```
-# Add custom code patterns to knowledge_base.json
-{
-  "id": 106,
-  "description": "Analyze time series data with seasonal decomposition",
-  "code": "from statsmodels.tsa.seasonal import seasonal_decompose\nresult = seasonal_decompose(df['value'], model='additive')\nresult.plot()\nplt.show()",
-  "category": "time_series",
-  "difficulty": "intermediate"
-}
-```
-
-### **Custom Domain Adaptation:**
-- **Healthcare**: HIPAA-compliant analysis templates
-- **Finance**: Risk assessment and regulatory reporting
-- **Education**: Student performance and learning analytics
-- **Environmental**: Climate and sustainability metrics
-- **Business**: KPI tracking and ROI optimization
+### **🔒 Privacy & Security by Design**
+> [!WARNING]
+> This is the most important feature. Your data and analysis **never leave your computer**. There is zero data transmission to any cloud service, making it safe for sensitive information.
 
 ---
 
@@ -434,171 +248,72 @@ gemma-data-assistant/
 
 ### **vs. Cloud AI Services (ChatGPT, Claude, etc.)**
 | Feature | Gemma Data Assistant | Cloud AI Services |
-|---------|---------------------|-------------------|
+|---|---|---|
 | **Privacy** | ✅ 100% Local | ❌ Data sent to servers |
 | **Cost** | ✅ Free after setup | ❌ $20-100+/month |
-| **Offline Access** | ✅ Works anywhere | ❌ Requires internet |
+| **Offline Access**| ✅ Works anywhere | ❌ Requires internet |
 | **Speed** | ✅ No network latency | ❌ Network dependent |
-| **Customization** | ✅ Full control | ❌ Limited options |
-| **Data Security** | ✅ Your device only | ❌ Third-party servers |
 
-### **vs. Traditional Data Science Tools**
+### **vs. Traditional Data Science Tools (Tableau, SPSS)**
 | Aspect | Our Solution | Traditional Tools |
-|--------|-------------|------------------|
-| **Learning Curve** | ✅ Natural language | ❌ Months of training |
-| **Setup Time** | ✅ 15 minutes | ❌ Days/weeks |
-| **Code Quality** | ✅ Professional-grade | ❌ Varies by skill |
-| **Error Handling** | ✅ Automatic fixing | ❌ Manual debugging |
+|---|---|---|
+| **Learning Curve**| ✅ Natural language | ❌ Months of training |
+| **Setup Time** | ✅ Under 15 minutes | ❌ Days/weeks |
+| **Error Handling**| ✅ Automatic fixing | ❌ Manual debugging |
 | **Documentation** | ✅ Auto-generated | ❌ Manual writing |
-| **Reproducibility** | ✅ Complete notebooks | ❌ Often incomplete |
 
 ---
 
 ## 📈 **Roadmap & Future Vision**
 
 ### **Phase 1: Foundation (Current)**
-- ✅ Core offline analysis engine
-- ✅ RAG-enhanced error correction
-- ✅ Professional notebook generation
-- ✅ Multi-domain knowledge base
+- ✅ Core offline analysis engine with self-healing RAG.
+- ✅ Professional notebook generation.
 
-### **Phase 2: Enhanced Intelligence (Q2 2025)**
-- 🔄 Advanced statistical methods integration
-- 🔄 Machine learning model recommendations
-- 🔄 Multi-modal analysis (text, images, audio)
-- 🔄 Collaborative features for team analysis
+### **Phase 2: Enhanced Intelligence (Q4 2025)**
+- 🔄 Advanced statistical methods and ML model recommendations.
+- 🔄 Multi-modal analysis (text, images, audio).
 
-### **Phase 3: Domain Specialization (Q3 2025)**
-- 🔮 Healthcare-specific analysis templates
-- 🔮 Financial compliance and reporting tools
-- 🔮 Educational assessment and learning analytics
-- 🔮 Environmental and climate science modules
+### **Phase 3: Domain Specialization (Q1 2026)**
+- 🔮 Healthcare-specific analysis templates (HIPAA-compliant).
+- 🔮 Financial compliance and reporting tools.
 
-### **Phase 4: Global Scale Impact (Q4 2025)**
-- 🔮 Mobile app for smartphone analysis
-- 🔮 Multi-language interface support
-- 🔮 Community knowledge base contributions
-- 🔮 Integration with popular data platforms
+> [!NOTE]
+> Our vision is to create a powerful, adaptable platform that can be specialized for any industry, putting expert-level analysis in the hands of domain professionals everywhere.
 
 ---
 
 ## 🤝 **Contributing & Community**
 
+We believe in the power of open source to drive global change.
+
 ### **How to Contribute:**
-```
-# 1. Fork the repository
-git clone https://github.com/your-username/gemma-data-assistant.git
+1.  Fork the repository.
+2.  Create a new feature branch (`git checkout -b feature/amazing-improvement`).
+3.  Commit your changes and push to your branch.
+4.  Submit a pull request with a detailed description of your improvement.
 
-# 2. Create feature branch
-git checkout -b feature/amazing-improvement
-
-# 3. Add your improvements
-# - New analysis templates
-# - Bug fixes and optimizations
-# - Documentation improvements
-# - Translation to new languages
-
-# 4. Submit pull request with detailed description
-```
-
-### **Contribution Areas:**
-- **🧠 AI Model Improvements**: Enhance reasoning and code generation
-- **📚 Knowledge Base**: Add new code patterns and solutions  
-- **🎨 UI/UX Enhancement**: Improve user interface and experience
-- **🌍 Localization**: Translate interface to new languages
-- **📖 Documentation**: Improve guides and tutorials
-- **🧪 Testing**: Add test cases and quality assurance
-
-### **Community Resources:**
-- **📺 Demo Videos**: Watch real-world usage examples
-- **📖 Tutorial Series**: Step-by-step learning guides
-- **💬 Discussion Forum**: Ask questions and share insights
-- **🐛 Issue Tracker**: Report bugs and request features
-- **📊 Showcase Gallery**: Share your analysis results
+> [!TIP]
+> The easiest way to contribute is by expanding the **`knowledge_base.json`** file. Add a new code pattern, a fix for a common error, or a new analysis technique. This directly improves the agent's intelligence!
 
 ---
 
 ## 📄 **License & Legal**
 
 ### **Open Source License**
-
-MIT License
-
-Copyright (c) 2025 Gemma Data Assistant
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-[Full MIT License Text]
-```
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
 
 ### **Privacy & Data Protection**
-- **No Data Collection**: We never collect, store, or transmit your data
-- **Local Processing Only**: All analysis happens on your device
-- **User Control**: You own and control all inputs and outputs
-- **Compliance Ready**: Meets GDPR, HIPAA, and other privacy regulations
+> [!IMPORTANT]
+> We do not collect, store, or transmit any of your data. All processing, analysis, and storage happens exclusively on your local machine. You retain 100% ownership and control of your information at all times.
 
 ---
 
 ## 🙏 **Acknowledgments**
-
-### **Special Thanks:**
-- **Google Gemma Team** - For creating the revolutionary Gemma 3n model
-- **Ollama Community** - For making local AI accessible to everyone
-- **Open Source Contributors** - For libraries that make this possible
-- **Beta Testers** - For feedback that shaped this product
-- **Global Community** - For inspiring us to democratize AI access
-
-### **Built With Love Using:**
-- 🤖 **Google Gemma 3n** - Advanced reasoning and code generation
-- 🚀 **Ollama** - Local AI model serving infrastructure  
-- 🎨 **Streamlit** - Beautiful and responsive web interface
-- 📊 **Jupyter** - Professional notebook execution environment
-- 🔍 **FAISS** - Lightning-fast vector similarity search
-- 🐍 **Python Ecosystem** - pandas, scikit-learn, matplotlib, seaborn
-
----
+- **Google Gemma Team**: For creating the revolutionary Gemma model family.
+- **Ollama Community**: For making local AI accessible to everyone.
+- **The Python Open Source Community**: For the incredible libraries that power this tool.
 
 ## 📞 **Contact & Support**
-
-### **Get Help:**
-- **📧 Email**: support@gemma-data-assistant.com
-- **💬 Discord**: [Community Chat Server]
-- **🐛 GitHub Issues**: [Report bugs and request features]
-- **📖 Documentation**: [Comprehensive user guides]
-- **🎥 Video Tutorials**: [YouTube channel with walkthroughs]
-
-### **Stay Connected:**
-- **🐦 Twitter**: [@GemmaDataAI] - Latest updates and tips
-- **💼 LinkedIn**: [Company Page] - Professional updates
-- **📺 YouTube**: [Tutorial Channel] - In-depth guides and demos
-- **📝 Blog**: [Technical Articles] - Deep dives and case studies
-
----
-
-## 🌟 **Ready to Transform Your Data Analysis?**
-
-> **"The future of AI is personal, private, and powerful. Join the revolution that's making advanced data science accessible to everyone, everywhere, without compromising privacy or breaking the bank."**
-
-### **Quick Action Steps:**
-1. **⬇️ Download Ollama** - Get your local AI engine running
-2. **📥 Clone Repository** - Grab the latest code from GitHub  
-3. **🚀 Launch Application** - Start analyzing in under 15 minutes
-4. **📊 Upload Your Data** - Begin your first analysis immediately
-5. **🎉 Share Your Success** - Show the world what you've discovered
-
-### **Join the Data Democracy Movement:**
-[![Get Started Now](https://img.shields.io/badge/Get%20Started%20Now-4285F4?style=for-the-badge&logo=rocket)](https://github.com/your-username/gemma-data-assistant)
-[![Watch Demo](https://img.shields.io/badge/Watch%20Demo-FF0000?style=for-the-badge&logo=youtube)](https://youtube.com/your-demo-video)
-[![Join Community](https://img.shields.io/badge/Join%20Community-7289DA?style=for-the-badge&logo=discord)](https://discord.gg/your-server)
-
----
-
-**Made with ❤️ for the global community by data scientists who believe everyone deserves access to powerful, private, and professional AI analysis tools.**
-
-*"Democratizing AI, One Analysis at a Time"* 🌍✨
-```
+- **GitHub Issues**: For bugs and feature requests, please **[open an issue](https://github.com/MarvelBoy047/Gemma_Ai_DataAssistant/issues)**.
+- **Discord**: Join our **[Community Chat Server](https://discord.gg/your-server)** for help and discussion.
