@@ -6,6 +6,7 @@ pandas
 numpy
 matplotlib
 seaborn
+tf-keras
 
 # Machine learning
 scikit-learn
@@ -38,3 +39,4 @@ imbalanced-learn
 statsmodels
 joblib
 plotly
+
