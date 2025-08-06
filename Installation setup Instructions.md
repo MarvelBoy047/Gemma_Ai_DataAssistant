@@ -146,7 +146,7 @@ streamlit run app.py
 
 For comprehensive usage instructions and tutorials, watch our detailed video guide:
 
-[![Gemma Data Assistant Tutorial](https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+[![Gemma Data Assistant Tutorial]]([https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://youtu.be/I37Q6swIQjM?si=V0MbUL1i78BKkcpe))
 
 *Watch the complete tutorial:* [Gemma Data Assistant - Complete Setup & Usage Guide](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
