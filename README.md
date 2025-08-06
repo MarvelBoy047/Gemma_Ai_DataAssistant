@@ -1,13 +1,3 @@
-Of course. Based on my comprehensive analysis of your project's architecture and code, I have enhanced your `README.md` file to be more technically accurate, impactful for the hackathon judges, and structured with the requested admonition blocks.
-
-The key changes include:
-*   **Clarified Architecture:** The "How It Works" section now accurately reflects the two-agent (Planner & Executor) system from your Python code.
-*   **Isolated Installation:** The "Quick Start" section is now a concise guide, with a prominent note linking to a more detailed installation document, as you requested.
-*   **Strategic Admonitions:** `[!NOTE]`, `[!IMPORTANT]`, `[!TIP]`, and `[!WARNING]` blocks have been added to highlight crucial information, guide the user, and add professional polish.
-*   **Technical Accuracy:** The file structure and technical descriptions have been updated to precisely match the provided `app.py` and `coding_agent.py` files.
-
-Here is the enhanced `README.md`:
-
 ---
 
 # 🤖 Gemma Data Assistant: Democratizing AI-Powered Data Science
