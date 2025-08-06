@@ -189,25 +189,55 @@ streamlit run app.py
 
 ## 🏗️ **Project Architecture & File Structure**
 
-This project is organized into a front-end UI and a back-end intelligence engine.
+The project's intelligence is driven by a decoupled, dual-agent architecture that communicates through the file system, ensuring robustness and scalability.
 
 ```
 Gemma_Ai_DataAssistant/
 │
-├── 📱 app.py                  # Main Streamlit UI, chat logic, and "Planner Agent"
+├── 🚀 app.py                 # Core Streamlit UI & "Planner Agent"
 │
-├── 🧠 coding_agent.py          # "Executor Agent" with self-healing and notebook execution
+├── 🤖 coding_agent.py         # Autonomous "Executor Agent" & Self-Healing Logic
 │
-├── 📚 knowledge_base.json     # RAG database with 100+ code patterns for planning & fixing
+├── 📚 knowledge_base.json    # Shared RAG database for planning and code correction
 │
-├── requirements.txt          # All Python dependencies for pip
+├── requirements.txt         # All Python package dependencies
 │
-├── 🗂️ chat_history/           # Stores JSON logs of user conversations
-│
-├── 🗂️ notebooks/              # Stores the generated .ipynb notebook files
-│
-└── 🗂️ agent_memory/           # Detailed logs of the Executor Agent's decisions
+└── 🗂️ Data & State Directories/
+    │
+    ├── chat_history/        # Communication Bus: Stores user chat logs and approved plans
+    │   └── <session_id>.json
+    │
+    ├── agent_memory/        # Agent's Logbook: Detailed logs of the Executor's decisions & actions
+    │   └── <session_id>_memory.json
+    │
+    ├── notebooks/           # Final Deliverables: Stores generated .ipynb files and datasets
+    │   └── <session_id>/
+    │       ├── <dataset_name>.csv
+    │       └── <session_id>.ipynb
+    │
+    └── planner_kb_index/    # Cached FAISS index for the Planner Agent's knowledge base
+
 ```
+
+### **Key Component Roles:**
+
+*   **`app.py` (The Planner & UI):**
+    *   Manages the user-facing Streamlit application.
+    *   Takes the user's natural language request and uses a FAISS-powered RAG search on the `knowledge_base.json` to find relevant tasks.
+    *   Asks Gemma to create a high-level analysis plan, which is then presented to the user for approval.
+
+*   **`coding_agent.py` (The Autonomous Executor):**
+    *   Runs in a background thread, constantly monitoring the `chat_history` directory for new tasks approved by the user.
+    *   This agent is the workhorse: it generates, executes, and debugs Python code step-by-step.
+    *   Features a multi-layered, self-healing mechanism that uses the `knowledge_base.json` to fix its own errors.
+
+*   **`knowledge_base.json` (The Shared Brain):**
+    *   A repository of over 100 trusted data science code patterns and task descriptions.
+    *   It serves both the Planner Agent (for creating plans) and the Executor Agent (for RAG-based error correction).
+
+> [!TIP]
+> **The Asynchronous Communication Bus**
+> The `app.py` front-end and the `coding_agent.py` back-end are fully decoupled. They communicate asynchronously by writing and reading JSON files in the `chat_history` directory. This robust, file-based messaging system is what allows the agent to work on complex, long-running tasks in the background without freezing the UI.
 
 ---
 
