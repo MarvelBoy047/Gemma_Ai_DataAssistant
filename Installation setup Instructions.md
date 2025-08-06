@@ -29,7 +29,7 @@ If you have a modern NVIDIA GPU, installing CUDA Toolkit will significantly impr
 1. *Check GPU Compatibility*: Ensure you have a CUDA-capable NVIDIA GPU
 2. *Download CUDA Toolkit*: Visit [NVIDIA CUDA Downloads](https://developer.nvidia.com/cuda-downloads)
 3. *Install CUDA*: Follow the installation wizard with default settings
-4. *Verify Installation*: Open Command Prompt and run `nvcc --version`
+4. *Verify Installation*: Open Command Prompt and run `nvcc --version or nvidia-smi`
 
 > [!TIP]
 > CUDA installation is optional but highly recommended for faster AI model inference. Users without a compatible GPU can proceed to the next step, but should expect longer processing times.
