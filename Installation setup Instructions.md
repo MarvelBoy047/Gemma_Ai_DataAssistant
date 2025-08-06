@@ -44,8 +44,10 @@ If you have a modern NVIDIA GPU, installing CUDA Toolkit will significantly impr
    - Choose "Customize installation" for advanced options
 4. *Verify Installation*: Open Command Prompt and run:
    
-   python --version
-   pip --version
+```
+python --version
+pip --version
+```
    
 
 ---
@@ -153,9 +155,6 @@ For comprehensive usage instructions and tutorials, watch our detailed video gui
 *Watch the complete tutorial:* [Gemma Data Assistant - Complete Setup & Usage Guide](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
 *Video Preview:*
-```
-
-```
 
 *Alternative*: Explore the intuitive interface on your own - it's designed to be user-friendly and self-explanatory.
 
