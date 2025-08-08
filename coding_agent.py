@@ -1,5 +1,4 @@
 from __future__ import annotations
-from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 import os
@@ -10,20 +9,16 @@ import threading
 import time
 import traceback
 import textwrap
-import copy
 import ast
 import re
-import glob
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Tuple, Dict, Any, Set
-from sentence_transformers import SentenceTransformer
-import pickle
 import nbformat
 from nbformat.v4 import new_notebook, new_code_cell, new_markdown_cell
 from nbclient import NotebookClient
 from jupyter_client import KernelManager
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 # Fixed LangChain imports
 from langchain_community.vectorstores import FAISS
@@ -35,8 +30,6 @@ except ImportError:
 
 
 # FAISS for efficient embedding storage
-import faiss
-import numpy as np
 
 from ollama import chat
 from loguru import logger
@@ -374,7 +367,7 @@ class AutonomousTaskPlanner:
                 try:
                     signal.signal(signal.SIGALRM, timeout_handler)
                     signal.alarm(90)  # 90 second timeout
-                except Exception as e:
+                except Exception:
                     pass  # Windows doesn't support signal.alarm
                 
                 response = chat(
@@ -386,7 +379,7 @@ class AutonomousTaskPlanner:
                 # Disable timeout
                 try:
                     signal.alarm(0)
-                except:
+                except Exception:
                     pass
                 
                 # FIXED: Proper content extraction
@@ -449,7 +442,7 @@ class AutonomousTaskPlanner:
         remaining_tasks = original_tasks[failed_step_idx + 1:]
         completed_tasks = original_tasks[:failed_step_idx]
         
-        adaptation_prompt = """You are an autonomous data science agent adapting your analysis plan after a failure.
+        adaptation_prompt = f"""You are an autonomous data science agent adapting your analysis plan after a failure.
         ORIGINAL USER REQUEST: {user_request}
         FAILED TASK: {failed_task}
         ERROR CONTEXT: {error_context}
@@ -533,7 +526,7 @@ class AutonomousTaskPlanner:
                         new_task, user_request, dataset_info, new_idx, notebook, client
                     )
                     if not success:
-                        logger.error(f"Adapted task also failed, stopping analysis")
+                        logger.error("Adapted task also failed, stopping analysis")
                         return False
                 
                 break  # Exit original loop since we handled remaining tasks
@@ -593,28 +586,6 @@ class SubtaskPlanner:
 
 def perform_initial_dataset_analysis(dataset_name: str) -> Dict[str, Any]:
     """Quick analysis to inform task planning"""
-    
-    analysis_code = """
-    import pandas as pd
-    import numpy as np
-
-    # Quick dataset inspection
-    df = pd.read_csv('{dataset_name}')
-    df.columns = df.columns.str.strip()
-
-    # Gather key info for planning
-    info = {{
-        'shape': df.shape,
-        'columns': df.columns.tolist(),
-        'dtypes': df.dtypes.to_dict(),
-        'sample': df.head(3).to_dict(),
-        'missing': df.isnull().sum().to_dict(),
-        'numeric_cols': df.select_dtypes(include=['number']).columns.tolist(),
-        'categorical_cols': df.select_dtypes(include=['object']).columns.tolist()
-    }}
-
-    print("DATASET_INFO:", info)
-    """
     
     # Execute this quickly to get dataset characteristics
     # (implement with temporary kernel)
@@ -879,7 +850,7 @@ def log_agent_step_realtime(chat_id: str, step_data: Dict):
         # Show generated code
         code = step_data["model_response"].get("code", "")
         if code:
-            print(f"\n💻 Generated Code:")
+            print("\n💻 Generated Code:")
             print("-" * 40)
             # Show full code, not truncated
             print(code)
@@ -888,7 +859,7 @@ def log_agent_step_realtime(chat_id: str, step_data: Dict):
         # Show execution results
         outputs = step_data["model_response"].get("outputs", [])
         if outputs:
-            print(f"\n📋 Execution Output:")
+            print("\n📋 Execution Output:")
             for output in outputs[:3]:  # Show first 3 outputs
                 content = output.get("content", "")
                 if content:
@@ -896,7 +867,7 @@ def log_agent_step_realtime(chat_id: str, step_data: Dict):
         
         if step_data["status"] != "success":
             error = step_data["model_response"].get("error", "Unknown error")
-            print(f"\n⚠️  Error Details:")
+            print("\n⚠️  Error Details:")
             print(f"   {error}")
         
         # 🆕 DISPLAY JSON LOG LOCATION
@@ -952,16 +923,13 @@ def adapt_plan_after_failure(current_tasks: List[str], failed_step_idx: int,
     """Autonomously adapt the analysis plan after a failure"""
     
     try:
-        failed_task = current_tasks[failed_step_idx] if failed_step_idx < len(current_tasks) else "Unknown"
-        remaining_tasks = current_tasks[failed_step_idx + 1:]
-        
-        adaptation_prompt = """You are an autonomous data science agent. A step in your analysis plan failed. 
+        adaptation_prompt = f"""You are an autonomous data science agent. A step in your analysis plan failed. 
 Adapt the remaining plan to work around this failure and still achieve the user's goals.
 
 ORIGINAL USER REQUEST: {user_request}
-FAILED STEP: {failed_task}
+FAILED STEP: {current_tasks[failed_step_idx] if failed_step_idx < len(current_tasks) else "Unknown"}
 ERROR CONTEXT: {error_context}
-REMAINING PLANNED STEPS: {remaining_tasks}
+REMAINING PLANNED STEPS: {current_tasks[failed_step_idx + 1:]}
 
 Create a new plan for the remaining steps that:
 1. Works around the failure
@@ -1606,7 +1574,6 @@ class OptimizedNotebookClient:
 
                         if fixed_source != cell.source:
                             logger.info(f"Fixed cell {cell_idx} source for context compatibility")
-                            original_source = cell.source
                             cell.source = fixed_source
 
                         self.client.execute_cell(cell, cell_idx)
@@ -1693,7 +1660,7 @@ class OptimizedNotebookClient:
             # Check if this was a visualization cell and replace complex outputs
             if detect_visualization_code(cell.source):
                 outputs = create_visualization_validation_output()
-                logger.info(f"📊 Visualization cell detected - simplified output for memory efficiency")
+                logger.info("📊 Visualization cell detected - simplified output for memory efficiency")
             else:
                 outputs = parse_cell_outputs(cell)
 
@@ -1701,7 +1668,7 @@ class OptimizedNotebookClient:
             logger.info(f"✅ Successfully executed cell {cell_index}")
             return True, None, outputs
 
-        except Exception as e:
+        except Exception:
             error_msg = traceback.format_exc()
             logger.error(f"Exception executing cell {cell_index}: {error_msg}")
             self.failed_cells.add(cell_index)
@@ -1783,10 +1750,7 @@ def generate_analysis_conclusion(nb: nbformat.NotebookNode, user_request: str, d
     if not summary_outputs:
         return "The analysis was performed, but no textual output was generated to summarize."
 
-    # Now, full_context is guaranteed to be a list of strings and will not crash .join()
-    full_context = "\n".join(summary_outputs)
-
-    summary_prompt = """
+    summary_prompt = f"""
 You are a data scientist summarizing the results of a notebook execution for a user.
 The user's original request was: "{user_request}"
 The dataset analyzed was: "{dataset_name}"
@@ -1796,7 +1760,7 @@ Synthesize these outputs into a concise, easy-to-understand summary of the key f
 Do not mention code or technical steps. Start with the main conclusion.
 
 --- COLLECTED OUTPUTS ---
-{full_context[:10000]}
+{chr(10).join(summary_outputs)}
 --- END OF OUTPUTS ---
 
 Provide the final summary in Markdown format.
@@ -1864,7 +1828,7 @@ def get_actual_column_context(df_variable_available: bool) -> str:
     try:
         # This would need to be executed in the kernel context
         return "Use df.columns.tolist() to get actual column names"
-    except:
+    except Exception:
         return "Column information unavailable"
 # In coding_agent.py, add these two missing functions
 
@@ -2069,7 +2033,7 @@ def debug_agent_memory(chat_id: str):
     memory_dir = Path("agent_memory")
     memory_file = memory_dir / f"agent_{chat_id}.json"
     
-    logger.info(f"🔍 Checking agent memory:")
+    logger.info("🔍 Checking agent memory:")
     logger.info(f"📁 Memory directory exists: {memory_dir.exists()}")
     logger.info(f"📄 Memory file path: {memory_file}")
     logger.info(f"📄 Memory file exists: {memory_file.exists()}")
@@ -2703,11 +2667,9 @@ def get_enhanced_step_guidance_with_context(step_index: int, task_name: str, cha
     if not chat_context:
         return base_guidance
     
-    dataset_name = chat_context.get('dataset_name', 'dataset.csv')
-    user_request = chat_context.get('user_query', '')
+
     
     # DYNAMIC: Extract analysis intent from user request (NO hardcoded domains)
-    analysis_intent = _extract_analysis_intent(user_request)
     
     # Step-specific context enhancements - GENERIC for ANY dataset
     if step_index == 0:  # Data loading
@@ -2819,10 +2781,6 @@ print(df.isnull().sum())
         return fixed_code
     
     # Use LLM for other errors
-    context_str = """
-Available columns: {', '.join(data_context.get('columns', []))}
-Available variables: {', '.join(data_context.get('variables', []))}
-"""
     
     messages = [
         {"role": "system", "content": CODE_FIXER_SYSTEM_PROMPT},
@@ -3205,7 +3163,6 @@ Return JSON format only:
 def log_agent_memory_step(chat_id: str, memory_data: Dict):
     """Log detailed agent memory to separate JSON file"""
     
-    import os
     from pathlib import Path
     
     # Create agent_memory directory if it doesn't exist
@@ -3457,7 +3414,7 @@ CRITICAL: Use existing df variable - NEVER reload data
     
     # Create focused prompt based on task type
     if is_viz:
-        prompt = """Generate visualization code for: {action['description']}
+        prompt = f"""Generate visualization code for: {action['description']}
 
 USER GOAL: {user_request}
 {dataset_context}
@@ -3470,7 +3427,7 @@ REQUIREMENTS:
 
 Return JSON: {{"markdown": "## Title", "code": "working_code"}}"""
     else:
-        prompt = """Generate analysis code for: {action['description']}
+        prompt = f"""Generate analysis code for: {action['description']}
 
 USER GOAL: {user_request}
 {dataset_context}
@@ -3604,13 +3561,7 @@ def chat_with_timeout(messages, model, timeout_seconds=150, **kwargs):
 
     return None
 
-def append_single_markdown_cell(nb, markdown_text: str):
-    """Append only a markdown cell to the notebook"""
-    from nbformat.v4 import new_markdown_cell
-    
-    cleaned_markdown = markdown_text.strip()
-    md_cell = new_markdown_cell(cleaned_markdown)
-    nb.cells.append(md_cell)
+
 
     
 def initialize_agent_memory(chat_id: str, history: List[Dict[str, Any]], memory_manager: AgentMemoryManager):
@@ -3722,4 +3673,3 @@ if __name__ == "__main__":
         logger.info("🚀 Starting RAG-enhanced Professional Notebook Generator")
 
     main()
-
