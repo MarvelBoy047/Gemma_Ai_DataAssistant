@@ -201,7 +201,7 @@ class AutonomousTaskPlanner:
         self.user_goal = user_request
 
         # Much shorter prompt for gemma3n:e2b
-        planning_prompt = f"""Create a data analysis plan.
+        planning_prompt = """Create a data analysis plan.
 
     USER WANTS: {user_request}
     DATASET: {dataset_info.get('name', 'data.csv')}
@@ -355,7 +355,7 @@ class AutonomousTaskPlanner:
             """Generate code for a specific task - SIMPLIFIED for gemma3n:e2b"""
 
             # Short, focused prompt
-            code_prompt = f"""Generate code for: {task}
+            code_prompt = """Generate code for: {task}
 
         Dataset: {dataset_name} (df already loaded)
         Context: {step_context}
@@ -449,7 +449,7 @@ class AutonomousTaskPlanner:
         remaining_tasks = original_tasks[failed_step_idx + 1:]
         completed_tasks = original_tasks[:failed_step_idx]
         
-        adaptation_prompt = f"""You are an autonomous data science agent adapting your analysis plan after a failure.
+        adaptation_prompt = """You are an autonomous data science agent adapting your analysis plan after a failure.
         ORIGINAL USER REQUEST: {user_request}
         FAILED TASK: {failed_task}
         ERROR CONTEXT: {error_context}
@@ -594,7 +594,7 @@ class SubtaskPlanner:
 def perform_initial_dataset_analysis(dataset_name: str) -> Dict[str, Any]:
     """Quick analysis to inform task planning"""
     
-    analysis_code = f"""
+    analysis_code = """
     import pandas as pd
     import numpy as np
 
@@ -630,7 +630,7 @@ def generate_autonomous_task_plan(self, user_query: str, dataset_info: Dict) -> 
     """Let the LLM generate a custom task plan based on the specific request and data"""
     
     # Keep prompt concise for gemma3n:e2b context limits
-    planning_prompt = f"""You are an autonomous data science agent. Create a custom analysis plan.
+    planning_prompt = """You are an autonomous data science agent. Create a custom analysis plan.
 
 USER REQUEST: {user_query}
 DATASET: {dataset_info.get('name', 'unknown')} - {dataset_info.get('shape', 'unknown shape')}
@@ -736,7 +736,7 @@ def generate_autonomous_cell(
 ) -> Optional[AgentOutput]:
     """Generate code that's specific to the task and user needs"""
     
-    prompt = f"""You are executing a custom analysis plan. Generate code for this specific step.
+    prompt = """You are executing a custom analysis plan. Generate code for this specific step.
 
 ORIGINAL USER REQUEST: {user_request}
 CURRENT TASK: {task}
@@ -955,7 +955,7 @@ def adapt_plan_after_failure(current_tasks: List[str], failed_step_idx: int,
         failed_task = current_tasks[failed_step_idx] if failed_step_idx < len(current_tasks) else "Unknown"
         remaining_tasks = current_tasks[failed_step_idx + 1:]
         
-        adaptation_prompt = f"""You are an autonomous data science agent. A step in your analysis plan failed. 
+        adaptation_prompt = """You are an autonomous data science agent. A step in your analysis plan failed. 
 Adapt the remaining plan to work around this failure and still achieve the user's goals.
 
 ORIGINAL USER REQUEST: {user_request}
@@ -1786,7 +1786,7 @@ def generate_analysis_conclusion(nb: nbformat.NotebookNode, user_request: str, d
     # Now, full_context is guaranteed to be a list of strings and will not crash .join()
     full_context = "\n".join(summary_outputs)
 
-    summary_prompt = f"""
+    summary_prompt = """
 You are a data scientist summarizing the results of a notebook execution for a user.
 The user's original request was: "{user_request}"
 The dataset analyzed was: "{dataset_name}"
@@ -1835,7 +1835,7 @@ def generate_code_correction_prompt(
         successful_history_str = "No cells have been executed successfully yet."
 
     # Construct the user message for the fixer prompt
-    user_message = f"""
+    user_message = """
 **SUCCESSFUL CODE HISTORY:**
 {successful_history_str}
 ---
@@ -2711,7 +2711,7 @@ def get_enhanced_step_guidance_with_context(step_index: int, task_name: str, cha
     
     # Step-specific context enhancements - GENERIC for ANY dataset
     if step_index == 0:  # Data loading
-        context_guidance = f"""
+        context_guidance = """
 DYNAMIC DATA LOADING CONTEXT:
 - Dataset file: '{dataset_name}'
 - User's goal: "{user_request}"
@@ -2722,7 +2722,7 @@ DYNAMIC DATA LOADING CONTEXT:
         return base_guidance + context_guidance
     
     elif step_index == 1:  # Data exploration
-        context_guidance = f"""
+        context_guidance = """
 ADAPTIVE EXPLORATION CONTEXT:
 - User objective: "{user_request}"
 - Dataset: {dataset_name}
@@ -2733,7 +2733,7 @@ ADAPTIVE EXPLORATION CONTEXT:
         return base_guidance + context_guidance
     
     elif step_index in [2, 3, 4]:  # Quality assessment and basic analysis
-        context_guidance = f"""
+        context_guidance = """
 DATA-DRIVEN QUALITY ASSESSMENT:
 - Target user need: "{user_request}"
 - Dataset: {dataset_name}
@@ -2743,7 +2743,7 @@ DATA-DRIVEN QUALITY ASSESSMENT:
         return base_guidance + context_guidance
     
     elif step_index in [5, 6, 7]:  # Pattern analysis and insights
-        context_guidance = f"""
+        context_guidance = """
 INTELLIGENT PATTERN DISCOVERY:
 - User's question: "{user_request}"
 - Dataset: {dataset_name}
@@ -2754,7 +2754,7 @@ INTELLIGENT PATTERN DISCOVERY:
         return base_guidance + context_guidance
     
     elif step_index in [8, 9, 10]:  # Advanced analysis/ML
-        context_guidance = f"""
+        context_guidance = """
 ADAPTIVE ADVANCED ANALYSIS:
 - Addressing: "{user_request}"
 - Dataset: {dataset_name}
@@ -2765,7 +2765,7 @@ ADAPTIVE ADVANCED ANALYSIS:
         return base_guidance + context_guidance
     
     else:  # Any other steps
-        context_guidance = f"""
+        context_guidance = """
 GENERAL CONTEXT:
 - User objective: "{user_request}"
 - Dataset: {dataset_name}
@@ -2819,14 +2819,14 @@ print(df.isnull().sum())
         return fixed_code
     
     # Use LLM for other errors
-    context_str = f"""
+    context_str = """
 Available columns: {', '.join(data_context.get('columns', []))}
 Available variables: {', '.join(data_context.get('variables', []))}
 """
     
     messages = [
         {"role": "system", "content": CODE_FIXER_SYSTEM_PROMPT},
-        {"role": "user", "content": f"""
+        {"role": "user", "content": """
 ORIGINAL CODE:
 {original_code}
 
@@ -2939,7 +2939,7 @@ def decide_next_micro_step(main_task: str, full_context: str) -> Dict:
     """
     Asks the LLM to decide if the main task is complete, or what the next micro-step should be.
     """
-    decision_prompt = f"""
+    decision_prompt = """
 You are a data science agent executing a plan.
 Your CURRENT MAIN TASK is: "{main_task}"
 
@@ -3005,7 +3005,7 @@ def ask_llm_for_next_step(user_request: str, dataset_name: str,
                          current_context: str, step_number: int) -> Optional[Dict]:
     """Ask LLM to autonomously decide what to do next - NO predetermined tasks"""
     
-    prompt = f"""You are an autonomous data science agent. Based on the user's request and current notebook state, decide what specific action to take next.
+    prompt = """You are an autonomous data science agent. Based on the user's request and current notebook state, decide what specific action to take next.
 
 USER'S ORIGINAL REQUEST: {user_request}
 DATASET: {dataset_name}
@@ -3061,7 +3061,7 @@ def execute_llm_generated_step(nb, optimized_client, action: Dict, user_request:
     
     step_start_time = time.time()
     
-    prompt = f"""Generate Python code for this specific analysis step.
+    prompt = """Generate Python code for this specific analysis step.
 
 USER'S ORIGINAL REQUEST: {user_request}
 DATASET: {dataset_name}
@@ -3327,7 +3327,7 @@ def get_current_notebook_context(nb, optimized_client) -> str:
 def ask_llm_for_step_estimation(user_request: str, dataset_name: str) -> int:
     """Ask LLM to estimate steps with robust JSON cleaning"""
     
-    prompt = f"""Estimate micro-steps needed for: {user_request}
+    prompt = """Estimate micro-steps needed for: {user_request}
 Dataset: {dataset_name}
 
 Return ONLY JSON: {{"estimated_steps": number_between_10_and_30}}"""
@@ -3378,7 +3378,7 @@ def ask_llm_for_micro_action(user_request: str, dataset_name: str, current_conte
                             step_number: int, estimated_total: int) -> Optional[Dict]:
     """Ask LLM for next action with strong loop prevention"""
     
-    prompt = f"""You are an autonomous data analyst. Choose the NEXT logical action.
+    prompt = """You are an autonomous data analyst. Choose the NEXT logical action.
 
 USER GOAL: {user_request}
 DATASET: {dataset_name}
@@ -3457,7 +3457,7 @@ CRITICAL: Use existing df variable - NEVER reload data
     
     # Create focused prompt based on task type
     if is_viz:
-        prompt = f"""Generate visualization code for: {action['description']}
+        prompt = """Generate visualization code for: {action['description']}
 
 USER GOAL: {user_request}
 {dataset_context}
@@ -3470,7 +3470,7 @@ REQUIREMENTS:
 
 Return JSON: {{"markdown": "## Title", "code": "working_code"}}"""
     else:
-        prompt = f"""Generate analysis code for: {action['description']}
+        prompt = """Generate analysis code for: {action['description']}
 
 USER GOAL: {user_request}
 {dataset_context}
@@ -3722,3 +3722,4 @@ if __name__ == "__main__":
         logger.info("🚀 Starting RAG-enhanced Professional Notebook Generator")
 
     main()
+
