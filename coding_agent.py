@@ -374,7 +374,7 @@ class AutonomousTaskPlanner:
                 try:
                     signal.signal(signal.SIGALRM, timeout_handler)
                     signal.alarm(90)  # 90 second timeout
-                except:
+                except Exception as e:
                     pass  # Windows doesn't support signal.alarm
                 
                 response = chat(
@@ -3720,4 +3720,5 @@ def test_rag_integration():
 if __name__ == "__main__":
     if test_rag_integration():
         logger.info("🚀 Starting RAG-enhanced Professional Notebook Generator")
+
     main()
