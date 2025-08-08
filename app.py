@@ -12,7 +12,6 @@ from pathlib import Path
 from datetime import datetime
 from typing import List, Dict, Any, Optional
 from pydantic import BaseModel, Field, ValidationError
-from ollama import chat
 from coding_agent import main as coding_agent_main
 import ollama
 import re
@@ -569,3 +568,4 @@ if __name__ == "__main__":
         st.session_state.agent_thread = agent_thread
 
     run_ui()
+
