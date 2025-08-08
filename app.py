@@ -1,20 +1,60 @@
-# app.py
-import streamlit as st
-import os
-from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import OllamaEmbeddings
-import subprocess
-import pandas as pd
+"""
+Gemma AI Data Assistant - Main Application Module
+
+This module provides the main Streamlit web interface for the Gemma AI Data Assistant.
+It implements a dual-agent system where a planner agent creates analysis plans and
+an executor agent runs the analysis in the background.
+
+Key Components:
+- PlannerKnowledgeBase: RAG-based tool selection system
+- System health checks for Ollama and GPU detection
+- Chat session management with persistent storage
+- Real-time progress tracking for background analysis
+
+Author: Gemma AI Data Assistant Team
+License: MIT
+"""
+
+# Standard library imports
 import json
-import time
-import threading
-from pathlib import Path
-from datetime import datetime
-from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field, ValidationError
-from coding_agent import main as coding_agent_main
-import ollama
+import logging
+import os
 import re
+import subprocess
+import threading
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+# Third-party imports
+import ollama
+import pandas as pd
+import streamlit as st
+from pydantic import BaseModel, Field, ValidationError
+
+# LangChain imports
+from langchain_community.vectorstores import FAISS
+
+try:
+    from langchain_ollama import OllamaEmbeddings  # New import path
+except ImportError:
+    from langchain_community.embeddings import OllamaEmbeddings  # Fallback
+
+# Local imports
+from coding_agent import main as coding_agent_main
+
+# --- LOGGING CONFIGURATION ---
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
 # --- CONFIGURATION & PATHS ---
 CHAT_HISTORY_DIR = Path("chat_history")
 NOTEBOOKS_DIR = Path("notebooks")
@@ -52,8 +92,18 @@ You MUST respond with ONLY a valid JSON object.
 
 class PlannerKnowledgeBase:
     """
-    Manages loading, searching, and PERSISTING the tool knowledge base.
-    It now saves the FAISS index to disk to avoid re-calculating it on every run.
+    Manages loading, searching, and persisting the tool knowledge base.
+    
+    This class handles the RAG (Retrieval-Augmented Generation) system for selecting
+    relevant data science tools based on user queries. It uses FAISS for efficient
+    vector similarity search and persists the index to disk to avoid re-computation.
+    
+    Attributes:
+        index_path (str): Path where the FAISS index is stored
+        tools (List[Dict]): List of available tools loaded from knowledge base
+        descriptions (List[str]): Tool descriptions for embedding
+        embeddings (OllamaEmbeddings): Embedding model for vectorization
+        vector_store (FAISS): Vector store for similarity search
     """
     def __init__(self, file_path="knowledge_base.json", index_path="planner_kb_index"):
         self.index_path = index_path
@@ -127,8 +177,21 @@ def load_chat_history_from_file(chat_id: str) -> List[Dict[str, Any]]:
     path = CHAT_HISTORY_DIR / f"{chat_id}.json"
     if path.exists():
         try:
-            with open(path, "r", encoding="utf-8") as f: return json.load(f)
-        except (json.JSONDecodeError, IOError): pass
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            logger.debug(f"Successfully loaded chat history for session {chat_id}")
+            return data
+        except json.JSONDecodeError as e:
+            logger.error(f"Chat history file {chat_id}.json is corrupted: {e}")
+            st.warning(f"Chat history file {chat_id}.json is corrupted: {e}")
+        except IOError as e:
+            logger.error(f"Could not read chat history file {chat_id}.json: {e}")
+            st.warning(f"Could not read chat history file {chat_id}.json: {e}")
+        except Exception as e:
+            logger.error(f"Unexpected error loading chat history {chat_id}.json: {e}")
+            st.warning(f"Unexpected error loading chat history {chat_id}.json: {e}")
+    else:
+        logger.debug(f"Chat history file for session {chat_id} does not exist")
     return []
 
 def get_dataset_context() -> str:
@@ -157,22 +220,39 @@ def get_dataset_context() -> str:
 def save_chat_history_to_file():
     """Saves the current chat history to its file if a session is active."""
     if st.session_state.current_chat_id:
-        path = CHAT_HISTORY_DIR / f"{st.session_state.current_chat_id}.json"
-    with open(path, "w", encoding="utf-8") as f: json.dump(st.session_state.chat_history, f, indent=2, ensure_ascii=False)
+        try:
+            path = CHAT_HISTORY_DIR / f"{st.session_state.current_chat_id}.json"
+            # Ensure directory exists
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(st.session_state.chat_history, f, indent=2, ensure_ascii=False)
+            logger.debug(f"Chat history saved for session {st.session_state.current_chat_id}")
+        except Exception as e:
+            logger.error(f"Failed to save chat history for session {st.session_state.current_chat_id}: {e}")
+            st.error(f"Failed to save chat history: {e}")
 
-def check_system_health() -> tuple[bool, bool]:
+def check_system_health() -> tuple[bool, bool, str]:
     """
-Checks if the Ollama server is running and whether GPU is physically available.
-"""
+    Checks if the Ollama server is running and whether GPU is physically available.
+    Returns (ollama_running, gpu_active, error_message)
+    """
     ollama_is_running = False
     gpu_is_active = False
+    error_message = ""
 
+    # Check Ollama service
     try:
         ollama.list()
         ollama_is_running = True
-    except Exception:
-        return False, False
+    except ConnectionError:
+        error_message = "Cannot connect to Ollama service. Please ensure Ollama is running with 'ollama serve'"
+    except Exception as e:
+        error_message = f"Ollama service error: {str(e)}"
 
+    if not ollama_is_running:
+        return False, False, error_message
+
+    # Check GPU availability
     try:
         result = subprocess.run(
             ["nvidia-smi"],
@@ -183,11 +263,18 @@ Checks if the Ollama server is running and whether GPU is physically available.
         )
         if result.returncode == 0 and "NVIDIA-SMI" in result.stdout:
             gpu_is_active = True
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        pass # nvidia-smi not found or timed out, assume no GPU
+    except FileNotFoundError:
+        # nvidia-smi not found, no NVIDIA GPU or drivers not installed
+        pass
+    except subprocess.TimeoutExpired:
+        # nvidia-smi timed out, might be system issue
+        pass
+    except Exception:
+        # Other GPU detection errors
+        pass
 
-    return ollama_is_running, gpu_is_active
-OLLAMA_RUNNING, GPU_ACTIVE = check_system_health()
+    return ollama_is_running, gpu_is_active, error_message
+OLLAMA_RUNNING, GPU_ACTIVE, SYSTEM_ERROR = check_system_health()
 
 def start_new_chat():
     """Resets all state variables to start a new conversation."""
@@ -210,7 +297,8 @@ def switch_chat_session(chat_id: str):
     session_dir = NOTEBOOKS_DIR / chat_id
     if session_dir.exists():
         csv_files = list(session_dir.glob("*.csv"))
-    if csv_files: st.session_state.uploaded_file_name = csv_files[0].name
+        if csv_files:
+            st.session_state.uploaded_file_name = csv_files[0].name
 
 #--- NEW: AGENT INTERACTION & PLANNING LOGIC ---
 # In app.py, replace the existing get_llm_response function
@@ -547,16 +635,32 @@ def run_ui():
 # MAIN EXECUTION BLOCK
 if __name__ == "__main__":
     if not OLLAMA_RUNNING:
-        st.set_page_config(page_title="Fatal Error", layout="centered")
-        st.title("❌ Connection Error")
-        st.error(
-            """
-            **Could not connect to the Ollama service.**
-            Please ensure that the Ollama application is running on your system.
-            You can start it by running `ollama serve` in your terminal.
-            Once the service is active, please refresh this page.
-            """
-        )
+        st.set_page_config(page_title="System Error", layout="centered")
+        st.title("❌ System Configuration Error")
+        st.error(f"**{SYSTEM_ERROR}**")
+        
+        st.markdown("### 🔧 How to Fix This:")
+        st.markdown("""
+        1. **Install Ollama** (if not installed):
+           - Visit [ollama.com](https://ollama.com) to download and install Ollama
+           
+        2. **Start the Ollama service**:
+           ```bash
+           ollama serve
+           ```
+           
+        3. **Download required models** (first time only):
+           ```bash
+           ollama pull gemma:2b
+           ollama pull nomic-embed-text
+           ```
+           
+        4. **Refresh this page** once Ollama is running
+        """)
+        
+        if st.button("🔄 Retry Connection", type="primary"):
+            st.rerun()
+        
         st.stop()
 
     if "agent_thread" not in st.session_state:
